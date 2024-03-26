@@ -91,7 +91,7 @@ function init() {
 	stats = new Stats();
 	container.appendChild(stats.dom);
 	const btn = document.createElement('button');
-	btn.ontouchstart = function () { btn.click() }
+	btn.setAttribute("ontouchstart", '');
 	btn.innerHTML = 'Run';
 	btn.id = "run-button"
 	btn.classList.add("bulat-merah");
