@@ -45,13 +45,13 @@ function init() {
 	scene.add( mesh );
 
 	const grid = new THREE.GridHelper( 2000, 20, 0x000000, 0x000000 );
-	grid.material.opacity = 0.2;
+	grid.material.opacity = 1;
 	grid.material.transparent = true;
 	scene.add( grid );
 
 	// model
 	const loader = new FBXLoader();
-	loader.load( 'public/Run.fbx', function ( object ) {
+	loader.load( 'public/run_in_place.fbx', function ( object ) {
 		mixer = new THREE.AnimationMixer( object );
 		const action = mixer.clipAction( object.animations[ 0 ] );
 		action.play();
@@ -88,8 +88,6 @@ function onWindowResize() {
 }
 
 function animate() {
-
-	let y = 1;
 	requestAnimationFrame( animate );
 	const delta = clock.getDelta();
 	if ( mixer ) 
