@@ -11,6 +11,9 @@ let i = 0;
 let started = false;
 const startSpeed = -0.001;
 let currentSpeed = -0.001;
+const maxSpeed = 0.085;
+const maxTimescale = 2.00;
+let action;
 
 const sphereGeometry = new THREE.SphereGeometry(2000, 64, 64);
 const clock = new THREE.Clock();
@@ -60,7 +63,7 @@ function init() {
 	const loader = new FBXLoader();
 	loader.load( 'public/run_in_place.fbx', function ( object ) {
 		mixer = new THREE.AnimationMixer( object );
-		const action = mixer.clipAction( object.animations[ 0 ] );
+		action = mixer.clipAction( object.animations[ 0 ] );
 		action.play();
 		object.traverse( function ( child ) {
 			if ( child.isMesh ) {
@@ -94,12 +97,18 @@ function init() {
 	btn.addEventListener("click", function() {
 		started = true;
 		scene.background = colors[i++ % 2];
-		currentSpeed = currentSpeed - 0.0005;
+		if (currentSpeed < maxSpeed)
+			currentSpeed = currentSpeed - 0.0005;
+		if (Math.floor(action.timeScale) < maxTimescale)
+			action.timeScale += 0.1;
 	});
 	setTimeout(function decrement() {
-		console.log("decrement => " + currentSpeed);
-		if (started && currentSpeed < startSpeed)
-			currentSpeed = currentSpeed + 0.0005;
+		if (started) {
+			if (currentSpeed < startSpeed)
+				currentSpeed = currentSpeed + 0.0005;
+			if (action.timeScale > 1)
+				action.timeScale -= 0.1;
+		}
 		setTimeout(decrement, 500)
 	}, 500);
 	container.appendChild( btn );
