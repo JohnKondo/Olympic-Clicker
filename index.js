@@ -120,5 +120,5 @@ function animate() {
 	if (mixer) 
 		mixer.update( delta );
 	renderer.render( scene, camera );
-	stats.update();
+	// stats.update();
 }
