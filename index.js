@@ -1,11 +1,10 @@
 import * as THREE from 'three';
-import Stats from 'three/addons/libs/stats.module.js';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
 
-let camera, scene, renderer, stats;
+let camera, scene, renderer;
 let colors = [new THREE.Color(0xa0ffff), new THREE.Color(0xffff0a)];
 let i = 0;
 let started = false;
@@ -87,9 +86,6 @@ function init() {
 
 	window.addEventListener('resize', onWindowResize);
 
-	// stats
-	stats = new Stats();
-	container.appendChild(stats.dom);
 	const btn = document.createElement('button');
 	btn.setAttribute("ontouchstart", '');
 	btn.innerHTML = 'Run';
@@ -131,5 +127,4 @@ function animate() {
 	else
 		mixer.update(0);
 	renderer.render(scene, camera);
-	// stats.update();
 }
