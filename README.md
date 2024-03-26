@@ -2,6 +2,8 @@
 
 ![Game Screenshot](screenshot.png)
 
+[<img alt="Deployed with FTP Deploy Action" src="https://img.shields.io/badge/Deployed With-FTP DEPLOY ACTION-%3CCOLOR%3E?style=for-the-badge&color=2b9348">](https://github.com/SamKirkland/FTP-Deploy-Action)
+
 ## Description
 Olympic Clicker is a game developed for the EPITA x E-ARTSUP Game Jam. It is built using Three.js, a JavaScript library for creating 3D graphics in the browser.
 
