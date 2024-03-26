@@ -4,8 +4,13 @@ import Stats from 'three/addons/libs/stats.module.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
-let camera, scene, renderer, stats;
 
+let camera, scene, renderer, stats;
+let colors = [new THREE.Color( 0xa0ffff ), new THREE.Color( 0xffff0a )];
+let i = 0;
+let started = false;
+
+const sphereGeometry = new THREE.SphereGeometry(2000, 64, 64);
 const clock = new THREE.Clock();
 
 let mixer;
@@ -19,11 +24,10 @@ function init() {
 	document.body.appendChild( container );
 
 	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-	camera.position.set( 100, 200, 300 );
+	camera.position.set( 3, 325, -525 );
 
 	scene = new THREE.Scene();
-	scene.background = new THREE.Color( 0xa0a0a0 );
-	scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 );
+	scene.background = new THREE.Color( 0xa0a0ff );
 
 	const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444, 5 );
 	hemiLight.position.set( 0, 200, 0 );
@@ -38,16 +42,17 @@ function init() {
 	dirLight.shadow.camera.right = 120;
 	scene.add( dirLight );
 
-	// ground
-	const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
-	mesh.rotation.x = - Math.PI / 2;
-	mesh.receiveShadow = true;
-	scene.add( mesh );
+	// Charger la texture de piste et créer un matériau
+	const trackMaterial = new THREE.MeshBasicMaterial({
+		map: new THREE.TextureLoader().load('public/red-background-material.jpg'),
+	});
 
-	const grid = new THREE.GridHelper( 2000, 20, 0x000000, 0x000000 );
-	grid.material.opacity = 1;
-	grid.material.transparent = true;
-	scene.add( grid );
+	// Créer un mesh pour le terrain sphérique
+	const sphereMesh = new THREE.Mesh(sphereGeometry, trackMaterial);
+	sphereMesh.scale.set(2, 1, 2);
+	sphereMesh.position.set(0, -2000, 0);
+	scene.add(sphereMesh);
+
 
 	// model
 	const loader = new FBXLoader();
@@ -72,6 +77,7 @@ function init() {
 
 	const controls = new OrbitControls( camera, renderer.domElement );
 	controls.target.set( 0, 100, 0 );
+	controls.enabled  = false;
 	controls.update();
 
 	window.addEventListener( 'resize', onWindowResize );
@@ -79,6 +85,15 @@ function init() {
 	// stats
 	stats = new Stats();
 	container.appendChild( stats.dom );
+	const btn = document.createElement( 'button' );
+	btn.innerHTML = 'Run';
+	btn.id = "run-button"
+	btn.classList.add("bulat-merah");
+	btn.addEventListener("click", function() {
+		started = true;
+		scene.background = colors[i++ % 2];
+	});
+	container.appendChild( btn );
 }
 
 function onWindowResize() {
@@ -90,6 +105,8 @@ function onWindowResize() {
 function animate() {
 	requestAnimationFrame( animate );
 	const delta = clock.getDelta();
+	if (started == true)
+		sphereGeometry.rotateX(-0.01);
 	if ( mixer ) 
 		mixer.update( delta );
 	renderer.render( scene, camera );
