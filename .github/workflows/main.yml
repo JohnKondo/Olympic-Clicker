@@ -1,11 +1,14 @@
 on: push
-name: 🚀 Deploy Olympic Clicker on push
+name: 🚀 Déploiement de Olympic Clicker lors d'un push
 jobs:
   web-deploy:
-    name: 🎉 Deploy
+    name: 🎉 Déploiement
     runs-on: ubuntu-latest
     steps:
-    - name: 📂 Sync files
+    - name: 🚚 Récupération de la dernière version
+      uses: actions/checkout@v4    
+    
+    - name: 📂 Synchronisation des fichiers sur le serveur
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: 167.86.94.65
