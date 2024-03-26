@@ -9,6 +9,8 @@ let camera, scene, renderer, stats;
 let colors = [new THREE.Color( 0xa0ffff ), new THREE.Color( 0xffff0a )];
 let i = 0;
 let started = false;
+const startSpeed = -0.001;
+let currentSpeed = -0.001;
 
 const sphereGeometry = new THREE.SphereGeometry(2000, 64, 64);
 const clock = new THREE.Clock();
@@ -92,7 +94,14 @@ function init() {
 	btn.addEventListener("click", function() {
 		started = true;
 		scene.background = colors[i++ % 2];
+		currentSpeed = currentSpeed - 0.0005;
 	});
+	setTimeout(function decrement() {
+		console.log("decrement => " + currentSpeed);
+		if (started && currentSpeed < startSpeed)
+			currentSpeed = currentSpeed + 0.0005;
+		setTimeout(decrement, 500)
+	}, 500);
 	container.appendChild( btn );
 }
 
@@ -105,11 +114,11 @@ function onWindowResize() {
 function animate() {
 	requestAnimationFrame( animate );
 	const delta = clock.getDelta();
-	if (started == true)
-		sphereGeometry.rotateX(-0.01);
-	if ( mixer ) 
+	if (started == true) {
+		sphereGeometry.rotateX(currentSpeed);
+	}
+	if (mixer) 
 		mixer.update( delta );
 	renderer.render( scene, camera );
 	stats.update();
-
 }
