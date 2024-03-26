@@ -11,4 +11,4 @@ jobs:
         server: 167.86.94.65
         username: alpha_main
         password: ${{ secrets.ftp_password }}
-        server-dir: /OlympicClicker
+        server-dir: /OlympicClicker/
