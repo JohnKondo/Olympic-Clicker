@@ -14,6 +14,7 @@ let currentSpeed = -0.001;
 const maxSpeed = 0.00;
 const maxTimescale = 2.00;
 let action;
+let change_relay = false;
 let clickAnimationInProgress = false;
 let animationId;
 let nbClick = 0;
@@ -24,6 +25,7 @@ const pathProps = "public/assets/props";
 
 let clouds1 = generate_clouds(50, 200);
 let clouds2 = generate_clouds(-50);
+let relay_block;
 const clock = new THREE.Clock();
 
 let mixer;
@@ -257,6 +259,42 @@ function generate_clouds(x, y = 150, z = 300) {
 	return cloudMesh;
 }
 
+/**
+ * @description A partir de la position actuelle + 4, on ajoute un relay qui va stopper le personnage
+ */
+function add_relay() {
+
+	console.log(dist.toFixed(1) + 4 % 14);
+	
+	if(dist.toFixed(0) == 2 && change_relay == false) {
+		console.log("relay added");
+		relay_block = new THREE.Mesh(new THREE.BoxGeometry(300, 200, 10), new THREE.MeshBasicMaterial({ color: '#FC2C00' }));
+		relay_block.position.set(0, -200, 500);
+		relay_block.rotation.x = Math.PI / 6;
+		scene.add(relay_block);
+		console.log(relay_block);
+		change_relay = true;
+	}
+}
+
+
+function move_relay() {
+
+	if(change_relay == true && currentSpeed != 0) {
+		relay_block.position.z -= 1.3;
+		relay_block.position.y += 0.8;
+		relay_block.rotation.x -= 0.001;
+
+		if(relay_block.position.z.toFixed(0) == 76) {
+			scene.remove(relay_block);
+			currentSpeed = 0;
+			document.getElementsByClassName("start_screen")[0].style.display = "inline-block";
+			change_relay = false;
+		}
+	}
+}
+
+
 function animate() {
 	requestAnimationFrame(animate);
 	const delta = clock.getDelta();
@@ -264,6 +302,7 @@ function animate() {
 		if (started == true) {
 			if (currentSpeed != 0) {
 				mixer.update(delta);
+				dist += delta;
 				document.getElementsByClassName("start_screen")[0].style.display = "none";
 			}
 			else
@@ -284,7 +323,10 @@ function animate() {
 				clouds2.position.x = Math.round((Math.random() * (140 - (-140))) + (-140));
 				clouds2.position.y = 147;
 			}
-			dist += delta;
+			/* console.log(dist.toFixed(1)); */
+			add_relay();
+			move_relay();
+
 			// if (Math.round(dist) % 9 == 0)
 			// 	scene.background = colors[Math.round(dist) % 9];
 			// else
