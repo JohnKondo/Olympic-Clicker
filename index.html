@@ -17,6 +17,16 @@
 		</script>
 	</head>
 	<body>
+		<script>
+			document.addEventListener('touchstart', function(event) {
+				if (event.touches.length > 1)
+					event.preventDefault();
+			}, { passive: false });
+
+			document.addEventListener('gesturestart', function(event) {
+				event.preventDefault();
+			});
+		</script>
 		<div class="start_screen">
 			<h1>Olympic Clicker</h1>
 			<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygULcmljayBhc3RsZXk%3D"
