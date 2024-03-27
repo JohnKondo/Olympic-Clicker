@@ -10,7 +10,7 @@ let i = 0;
 let started = false;
 const startSpeed = -0.001;
 let currentSpeed = -0.001;
-const maxSpeed = 0.085;
+const maxSpeed = 0.00;
 const maxTimescale = 2.00;
 let action;
 
@@ -18,6 +18,7 @@ const sphereGeometry = new THREE.SphereGeometry(2000, 64, 64);
 const clock = new THREE.Clock();
 
 let mixer;
+let dist = 0;
 
 init();
 animate();
@@ -93,8 +94,7 @@ function init() {
 	btn.classList.add("pressBtn");
 	btn.addEventListener("click", function () {
 		started = true;
-		scene.background = colors[i++ % 2];
-		if (currentSpeed < maxSpeed)
+		if (currentSpeed <= maxSpeed)
 			currentSpeed = currentSpeed - 0.0005;
 		if (Math.floor(action.timeScale) < maxTimescale)
 			action.timeScale += 0.1;
@@ -103,6 +103,8 @@ function init() {
 		if (started) {
 			if (currentSpeed < startSpeed)
 				currentSpeed = currentSpeed + 0.0005;
+			if (currentSpeed == -0.001)
+				currentSpeed = 0;
 			if (action.timeScale > 1)
 				action.timeScale -= 0.1;
 		}
@@ -120,11 +122,23 @@ function onWindowResize() {
 function animate() {
 	requestAnimationFrame(animate);
 	const delta = clock.getDelta();
-	if (started == true) {
-		mixer.update(delta);
-		sphereGeometry.rotateX(currentSpeed);
+	if (mixer) {
+		if (started == true) {
+			if (currentSpeed != 0)
+				mixer.update(delta);
+			else
+				mixer.update(0);
+			sphereGeometry.rotateX(currentSpeed);
+			console.log(currentSpeed);
+			dist += delta;
+			if (Math.round(dist) % 9 == 0)
+				scene.background = colors[Math.round(dist) % 9];
+			else
+				scene.background = colors[(Math.round(dist) + 1) % 9];
+
+		}
+		else
+			mixer.update(0);
 	}
-	else
-		mixer.update(0);
 	renderer.render(scene, camera);
 }
