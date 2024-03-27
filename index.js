@@ -5,7 +5,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
 
 let camera, scene, renderer;
-let colors = [new THREE.Color(0xa0ffff), new THREE.Color(0xffff0a)];
+let colors = [new THREE.Color(0x87ceeb), new THREE.Color(0x87cefa)];
 let i = 0;
 let started = false;
 let stopped = false;
@@ -38,7 +38,7 @@ function init() {
 	camera.position.set(3, 325, -525);
 
 	scene = new THREE.Scene();
-	scene.background = new THREE.Color(0xa0a0ff);
+	scene.background = new THREE.Color(0x87cefa);
 
 	const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 5);
 	hemiLight.position.set(0, 200, 0);
@@ -69,7 +69,6 @@ function init() {
 	});
 	
 	loader.load('public/assets/props/terrain.fbx', function (object) {
-		console.log(object);
 		object.traverse(function (child) {
 			if (child instanceof THREE.Mesh) {
 				child.material = trackMaterial; // Appliquer le matériau à chaque maillage dans l'objet FBX
@@ -230,12 +229,19 @@ function animate() {
 			sphereGeometry.rotateX(currentSpeed);
             clouds1.position.y += 0.15;
             clouds2.position.y += 0.15;
-			console.log(currentSpeed);
+			if (clouds1.position.y > 470) {
+				clouds1.position.x = Math.round((Math.random() * (140 - (-140))) + (-140));
+				clouds1.position.y = 147;
+			}
+			if (clouds2.position.y > 470) {
+				clouds2.position.x = Math.round((Math.random() * (140 - (-140))) + (-140));
+				clouds2.position.y = 147;
+			}
 			dist += delta;
-			if (Math.round(dist) % 9 == 0)
-				scene.background = colors[Math.round(dist) % 9];
-			else
-				scene.background = colors[(Math.round(dist) + 1) % 9];
+			// if (Math.round(dist) % 9 == 0)
+			// 	scene.background = colors[Math.round(dist) % 9];
+			// else
+			// 	scene.background = colors[(Math.round(dist) + 1) % 9];
 		}
 		else
 			mixer.update(0);
