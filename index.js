@@ -60,6 +60,13 @@ function init() {
 	dirLight.shadow.camera.right = 120;
 	scene.add(dirLight);
 
+	// Audio
+	const audioListener = new THREE.AudioListener();
+	camera.add(audioListener);
+	const sound = new THREE.Audio(audioListener);
+	const clickAudioLoader = new THREE.AudioLoader();
+
+
 	const loader = new FBXLoader();
 	const textureLoader = new THREE.TextureLoader();
 
@@ -170,6 +177,12 @@ function init() {
 		if (Math.floor(action.timeScale) < maxTimescale)
 			action.timeScale += 0.1;
 		createClickEffect(e, container);
+		clickAudioLoader.load('public/assets/sounds/click.wav', function (buffer) {
+			sound.setBuffer(buffer);
+			sound.setVolume(0.5);
+			sound.setLoop(false);
+			sound.play();
+		});
 	});
 
 	setTimeout(function decrement() {
