@@ -16,6 +16,7 @@ const maxTimescale = 2.00;
 let action;
 let clickAnimationInProgress = false;
 let animationId;
+let nbClick = 0;
 
 const sphereGeometry = new THREE.SphereGeometry(2000, 64, 64);
 let clouds1 = generate_clouds(50, 200);
@@ -52,10 +53,34 @@ function init() {
 	dirLight.shadow.camera.right = 120;
 	scene.add(dirLight);
 
+	const loader = new FBXLoader();
+
 	// Charger la texture de piste et créer un matériau
-	const trackMaterial = new THREE.MeshBasicMaterial({
-		map: new THREE.TextureLoader().load('public/red-background-material.jpg'),
+	const textureLoader = new THREE.TextureLoader();
+	const texture1 = textureLoader.load('public/assets/textures/terrain/terrain_DefaultMaterial_BaseColor.png');
+	const texture2 = textureLoader.load('public/assets/textures/terrain/terrain_DefaultMaterial_Height.png');
+	const texture3 = textureLoader.load('public/assets/textures/terrain/terrain_DefaultMaterial_Normal.png');
+	const texture4 = textureLoader.load('public/assets/textures/terrain/terrain_DefaultMaterial_Roughness.png');
+	const trackMaterial = new THREE.MeshStandardMaterial({
+		map: texture1, // Texture de base
+		displacementMap: texture2, // Texture de déplacement
+		normalMap: texture3, // Texture de normal
+		roughnessMap: texture4 // Texture de rugosité
 	});
+	
+	loader.load('public/assets/props/terrain.fbx', function (object) {
+		console.log(object);
+		object.traverse(function (child) {
+			if (child instanceof THREE.Mesh) {
+				child.material = trackMaterial; // Appliquer le matériau à chaque maillage dans l'objet FBX
+			}
+		});
+		scene.add(object);
+	});
+
+	// const trackMaterial = new THREE.MeshBasicMaterial({
+	// 	map: new THREE.TextureLoader().load('public/red-background-material.jpg'),
+	// });
 
 	// Créer un mesh pour le terrain sphérique
 	const sphereMesh = new THREE.Mesh(sphereGeometry, trackMaterial);
@@ -67,8 +92,8 @@ function init() {
     scene.add(clouds2);
 
 	// model
-	const loader = new FBXLoader();
-	loader.load('public/run_in_place.fbx', function (object) {
+	loader.load('public/perso-run.fbx', function (object) {
+		object.scale.x = object.scale.y = object.scale.z = 0.15;
 		mixer = new THREE.AnimationMixer(object);
 		action = mixer.clipAction(object.animations[0]);
 		action.play();
@@ -101,6 +126,7 @@ function init() {
 	btn.classList.add("pressBtn");
 	btn.addEventListener("click", function (e) {
 		started = true;
+		nbClick++;
 		if (currentSpeed <= maxSpeed)
 		{
 			if (stopped) {
@@ -130,7 +156,7 @@ function init() {
 		if (started) {
 			if (currentSpeed < startSpeed)
 				currentSpeed = currentSpeed + 0.0008;
-			if (currentSpeed >= -0.001) {
+			if (currentSpeed >= -0.001 && nbClick >= 3) {
 				currentSpeed = 0;
 				stopped = true;
 			}
