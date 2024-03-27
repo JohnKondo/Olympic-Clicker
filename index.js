@@ -8,6 +8,7 @@ let camera, scene, renderer;
 let colors = [new THREE.Color(0xa0ffff), new THREE.Color(0xffff0a)];
 let i = 0;
 let started = false;
+let stopped = false;
 const startSpeed = -0.001;
 let currentSpeed = -0.001;
 const maxSpeed = 0.00;
@@ -97,7 +98,13 @@ function init() {
 	btn.addEventListener("click", function (e) {
 		started = true;
 		if (currentSpeed <= maxSpeed)
+		{
+			if (stopped) {
+				currentSpeed = -0.001;
+				stopped = false;
+			}
 			currentSpeed = currentSpeed - 0.0008;
+		}
 		if (Math.floor(action.timeScale) < maxTimescale)
 			action.timeScale += 0.1;
 		const clickEffect = document.querySelector(".click-effect");
@@ -119,8 +126,10 @@ function init() {
 		if (started) {
 			if (currentSpeed < startSpeed)
 				currentSpeed = currentSpeed + 0.0008;
-			if (currentSpeed >= -0.001)
+			if (currentSpeed >= -0.001) {
 				currentSpeed = 0;
+				stopped = true;
+			}
 			if (action.timeScale > 1)
 				action.timeScale -= 0.1;
 		}
