@@ -122,7 +122,7 @@ function init() {
 			map: base_color4,
 			normalMap: normal,
 			roughnessMap: roughness,
-			displacementMap: height,
+			// displacementMap: height,
 		});
 
 		object.scale.x = object.scale.y = object.scale.z = 0.15;
