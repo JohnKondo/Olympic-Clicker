@@ -18,17 +18,24 @@ let clickAnimationInProgress = false;
 let animationId;
 let nbClick = 0;
 
-const sphereGeometry = new THREE.SphereGeometry(2000, 64, 64);
+
+const pathTexture = "public/assets/textures";
+const pathProps = "public/assets/props";
+
 let clouds1 = generate_clouds(50, 200);
 let clouds2 = generate_clouds(-50);
 const clock = new THREE.Clock();
 
 let mixer;
+let terrain;
 let dist = 0;
 
 init();
 animate();
 
+/**
+ * @description Initialize the scene
+ */
 function init() {
 
 	const container = document.createElement('div');
@@ -55,43 +62,54 @@ function init() {
 
 	const loader = new FBXLoader();
 
-	// Charger la texture de piste et créer un matériau
-	const textureLoader = new THREE.TextureLoader();
-	const texture1 = textureLoader.load('public/assets/textures/terrain/terrain_DefaultMaterial_BaseColor.png');
-	const texture2 = textureLoader.load('public/assets/textures/terrain/terrain_DefaultMaterial_Height.png');
-	const texture3 = textureLoader.load('public/assets/textures/terrain/terrain_DefaultMaterial_Normal.png');
-	const texture4 = textureLoader.load('public/assets/textures/terrain/terrain_DefaultMaterial_Roughness.png');
-	const trackMaterial = new THREE.MeshStandardMaterial({
-		map: texture1, // Texture de base
-		displacementMap: texture2, // Texture de déplacement
-		normalMap: texture3, // Texture de normal
-		roughnessMap: texture4 // Texture de rugosité
-	});
-	
-	loader.load('public/assets/props/terrain.fbx', function (object) {
-		object.traverse(function (child) {
-			if (child instanceof THREE.Mesh) {
-				child.material = trackMaterial; // Appliquer le matériau à chaque maillage dans l'objet FBX
-			}
-		});
-		scene.add(object);
-	});
-
-	// const trackMaterial = new THREE.MeshBasicMaterial({
-	// 	map: new THREE.TextureLoader().load('public/red-background-material.jpg'),
-	// });
-
-	// Créer un mesh pour le terrain sphérique
-	const sphereMesh = new THREE.Mesh(sphereGeometry, trackMaterial);
-	sphereMesh.scale.set(2, 1, 2);
-	sphereMesh.position.set(0, -2000, 0);
-	scene.add(sphereMesh);
-
     scene.add(clouds1);
     scene.add(clouds2);
 
+
+	// Terrain
+	new FBXLoader().load(`${pathProps}/terrain.fbx`, function (object) {	
+		
+		const base_color = new THREE.TextureLoader().load(`${pathTexture}/terrain/terrain_DefaultMaterial_BaseColor.png`);
+		//const height = new THREE.TextureLoader().load(`${pathTexture}/terrain/terrain_DefaultMaterial_Height.png`);
+		const normal = new THREE.TextureLoader().load(`${pathTexture}/terrain/terrain_DefaultMaterial_Normal.png`);
+		const roughness = new THREE.TextureLoader().load(`${pathTexture}/terrain/terrain_DefaultMaterial_Roughness.png`);
+
+		const texture = new THREE.MeshStandardMaterial({
+		    map: base_color,
+		    normalMap: normal,
+		    roughnessMap: roughness,
+		    //displacementMap: height,
+		    displacementScale: 0.1,
+		    displacementBias: 0.1,
+		    roughness: 1,
+		    metalness: 0.5
+		});
+
+		object.scale.set(0.1, 0.1, 0.1);
+		object.position.set(0, -480, 0);
+		object.rotation.y = Math.PI / 2;
+
+		terrain = object;
+
+        terrain.traverse(function (child) {
+
+            if (child.isMesh) {
+				if (child.material && child.material.map !== undefined) {
+					console.log(child.material);
+					child.material = texture;
+					child.material.needsUpdate = true;
+				}
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+        scene.add(terrain);
+    });
+
+
 	// model
-	loader.load('public/perso-run.fbx', function (object) {
+	loader.load(`${pathProps}/perso-run.fbx`, function (object) {
+
 		object.scale.x = object.scale.y = object.scale.z = 0.15;
 		mixer = new THREE.AnimationMixer(object);
 		action = mixer.clipAction(object.animations[0]);
@@ -151,6 +169,7 @@ function init() {
 			clickAnimationInProgress = false;
 		}, 750);
 	});
+
 	setTimeout(function decrement() {
 		if (started) {
 			if (currentSpeed < startSpeed)
@@ -164,6 +183,7 @@ function init() {
 		}
 		setTimeout(decrement, 500)
 	}, 500);
+
 	container.appendChild(btn);
 
 	const clickEffect = document.createElement("div");
@@ -184,17 +204,6 @@ function onWindowResize() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-// function generate_clouds() {
-//     const cloudGeometry = new THREE.TextureLoader().load('public/nuage.png');
-//     const cloudGeo = new THREE.PlaneGeometry(300, 100);
-//     const material = new THREE.MeshBasicMaterial({ map: cloudGeometry});
-//     let cloud = new THREE.Mesh(cloudGeo, material);
-
-//     cloud.position.set(0, 300 , 0);
-//     cloud.rotation.x = -180;
-
-//     return cloud;
-// }
 
 function generate_clouds(x, y = 150, z = 300) {
     const cloudTexture = new THREE.TextureLoader().load('public/clouds.jpg');
@@ -204,16 +213,7 @@ function generate_clouds(x, y = 150, z = 300) {
     cloudMesh.position.set(x, y, z);
 
     return cloudMesh;
-}
-
-
-// function start_game( container,  ) {
-
-//     // On ajoute un écran sombre transparent à la scène
-
-//     container.appendChild(arrow);
-// }
-
+}	
 
 function animate() {
 	requestAnimationFrame(animate);
@@ -226,7 +226,10 @@ function animate() {
             }
 			else
 				mixer.update(0);
-			sphereGeometry.rotateX(currentSpeed);
+			// sphereGeometry.rotateX(currentSpeed);
+
+			if(terrain)
+				terrain.rotation.z += currentSpeed;
             clouds1.position.y += 0.15;
             clouds2.position.y += 0.15;
 			if (clouds1.position.y > 470) {
@@ -245,7 +248,6 @@ function animate() {
 		}
 		else
 			mixer.update(0);
-    
 	}
 	renderer.render(scene, camera);
 }
