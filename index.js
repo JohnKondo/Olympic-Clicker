@@ -102,8 +102,8 @@ function init() {
 	setTimeout(function decrement() {
 		if (started) {
 			if (currentSpeed < startSpeed)
-				currentSpeed = currentSpeed + 0.0005;
-			if (currentSpeed == -0.001)
+				currentSpeed = currentSpeed + 0.0003;
+			if (currentSpeed >= -0.001)
 				currentSpeed = 0;
 			if (action.timeScale > 1)
 				action.timeScale -= 0.1;
