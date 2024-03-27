@@ -126,7 +126,6 @@ function init() {
 		});
 
 		object.scale.x = object.scale.y = object.scale.z = 0.15;
-		console.log(object);
 		mixer = new THREE.AnimationMixer(object);
 		action = mixer.clipAction(object.animations[0]);
 		action.play();
@@ -203,7 +202,7 @@ function onWindowResize() {
  * @param {HTMLElement} container Container of the click effect
  */
 function createClickEffect(e, container) {
-	const clickEffect = document.createElement("div");
+	let clickEffect = document.createElement("div");
 	clickEffect.classList.add("click-effect");
 	for (let i = 0; i < 8; i++) {
 		const spike = document.createElement("div");
@@ -230,7 +229,8 @@ function createClickEffect(e, container) {
 
 	// delete the children after 1s
 	setTimeout(() => {
-		clickEffect.remove();
+		// clickEffect.remove();
+		clickEffect.parentNode.removeChild(clickEffect);
 	}, 750);
 }
 
