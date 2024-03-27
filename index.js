@@ -42,8 +42,8 @@ function init() {
 	document.body.appendChild(container);
 
 	camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
-	camera.position.set(3, 325, -525);
-
+	// camera.position.set(3, 325, -525);
+	camera.position.set(3, 525, -325);
 	scene = new THREE.Scene();
 	scene.background = new THREE.Color(0x87cefa);
 
@@ -95,7 +95,6 @@ function init() {
 
             if (child.isMesh) {
 				if (child.material && child.material.map !== undefined) {
-					console.log(child.material);
 					child.material = texture;
 					child.material.needsUpdate = true;
 				}
@@ -230,8 +229,10 @@ function animate() {
 
 			if(terrain)
 				terrain.rotation.z += currentSpeed;
-            clouds1.position.y += 0.15;
-            clouds2.position.y += 0.15;
+			if (stopped == false) {
+				clouds1.position.y += 0.15;
+				clouds2.position.y += 0.15;
+			}
 			if (clouds1.position.y > 470) {
 				clouds1.position.x = Math.round((Math.random() * (140 - (-140))) + (-140));
 				clouds1.position.y = 147;
