@@ -13,6 +13,8 @@ let currentSpeed = -0.001;
 const maxSpeed = 0.00;
 const maxTimescale = 2.00;
 let action;
+let clickAnimationInProgress = false;
+let animationId;
 
 const sphereGeometry = new THREE.SphereGeometry(2000, 64, 64);
 const clock = new THREE.Clock();
@@ -92,12 +94,26 @@ function init() {
 	btn.innerHTML = 'Run';
 	btn.id = "run-button"
 	btn.classList.add("pressBtn");
-	btn.addEventListener("click", function () {
+	btn.addEventListener("click", function (e) {
 		started = true;
 		if (currentSpeed <= maxSpeed)
 			currentSpeed = currentSpeed - 0.0008;
 		if (Math.floor(action.timeScale) < maxTimescale)
 			action.timeScale += 0.1;
+		const clickEffect = document.querySelector(".click-effect");
+		if (clickAnimationInProgress) {
+			clearTimeout(animationId);
+			clickEffect.classList.remove("effect");
+			void clickEffect.offsetWidth;
+		}
+		clickEffect.style.top = e.clientY + window.scrollY + "px";
+		clickEffect.style.left = e.clientX + window.scrollX + "px";
+		clickEffect.classList.add("effect");
+		clickAnimationInProgress = true;
+		animationId = setTimeout(() => {
+			clickEffect.classList.remove("effect");
+			clickAnimationInProgress = false;
+		}, 750);
 	});
 	setTimeout(function decrement() {
 		if (started) {
@@ -111,6 +127,17 @@ function init() {
 		setTimeout(decrement, 500)
 	}, 500);
 	container.appendChild(btn);
+
+	const clickEffect = document.createElement("div");
+	clickEffect.classList.add("click-effect");
+	for (let i = 0; i < 8; i++) {
+		const spike = document.createElement("div");
+		spike.classList.add("spike");
+		spike.style.setProperty("--angle", `${i * 45}deg`);
+		spike.style.setProperty("--distance", `${30 + Math.random() * 5}px`);
+		clickEffect.appendChild(spike);
+	}
+	container.appendChild(clickEffect);
 }
 
 function onWindowResize() {
