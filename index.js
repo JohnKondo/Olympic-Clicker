@@ -18,6 +18,8 @@ let clickAnimationInProgress = false;
 let animationId;
 
 const sphereGeometry = new THREE.SphereGeometry(2000, 64, 64);
+let clouds1 = generate_clouds(50, 200);
+let clouds2 = generate_clouds(-50);
 const clock = new THREE.Clock();
 
 let mixer;
@@ -61,6 +63,8 @@ function init() {
 	sphereMesh.position.set(0, -2000, 0);
 	scene.add(sphereMesh);
 
+    scene.add(clouds1);
+    scene.add(clouds2);
 
 	// model
 	const loader = new FBXLoader();
@@ -152,29 +156,64 @@ function init() {
 function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
-	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.setSize( window.innerWidth, window.innerHeight );
 }
+
+// function generate_clouds() {
+//     const cloudGeometry = new THREE.TextureLoader().load('public/nuage.png');
+//     const cloudGeo = new THREE.PlaneGeometry(300, 100);
+//     const material = new THREE.MeshBasicMaterial({ map: cloudGeometry});
+//     let cloud = new THREE.Mesh(cloudGeo, material);
+
+//     cloud.position.set(0, 300 , 0);
+//     cloud.rotation.x = -180;
+
+//     return cloud;
+// }
+
+function generate_clouds(x, y = 150, z = 300) {
+    const cloudTexture = new THREE.TextureLoader().load('public/clouds.jpg');
+    const cloudGeometry = new THREE.SphereGeometry(15, 32, 32); // Rayon, segments horizontaux, segments verticaux
+    const cloudMaterial = new THREE.MeshLambertMaterial({ map: cloudTexture, transparent: true });
+    const cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
+    cloudMesh.position.set(x, y, z);
+
+    return cloudMesh;
+}
+
+
+// function start_game( container,  ) {
+
+//     // On ajoute un écran sombre transparent à la scène
+
+//     container.appendChild(arrow);
+// }
+
 
 function animate() {
 	requestAnimationFrame(animate);
 	const delta = clock.getDelta();
 	if (mixer) {
 		if (started == true) {
-			if (currentSpeed != 0)
+			if (currentSpeed != 0) {
 				mixer.update(delta);
+                document.getElementsByClassName("start_screen")[0].style.display = "none";
+            }
 			else
 				mixer.update(0);
 			sphereGeometry.rotateX(currentSpeed);
+            clouds1.position.y += 0.15;
+            clouds2.position.y += 0.15;
 			console.log(currentSpeed);
 			dist += delta;
 			if (Math.round(dist) % 9 == 0)
 				scene.background = colors[Math.round(dist) % 9];
 			else
 				scene.background = colors[(Math.round(dist) + 1) % 9];
-
 		}
 		else
 			mixer.update(0);
+    
 	}
 	renderer.render(scene, camera);
 }
