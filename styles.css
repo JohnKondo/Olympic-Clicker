@@ -11,6 +11,13 @@
     margin-left: -50px;
 }
 
+#run-button, .pressBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 button {
     user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -45,7 +52,7 @@ body h1 {
     text-align: center;
 }
 
-.bulat-merah {
+.pressBtn {
     background: #ff6363;
     border: none;
     width: 180px;
@@ -66,11 +73,11 @@ body h1 {
     user-select: none;
 }
 
-.bulat-merah:hover {
+.pressBtn:hover {
     background: #fe8080;
 }
 
-.bulat-merah:active {
+.pressBtn:active {
     -webkit-transform: translateY(10px);
     -moz-transform: translateY(10px);
     transform: translateY(10px);

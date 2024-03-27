@@ -90,7 +90,7 @@ function init() {
 	btn.setAttribute("ontouchstart", '');
 	btn.innerHTML = 'Run';
 	btn.id = "run-button"
-	btn.classList.add("bulat-merah");
+	btn.classList.add("pressBtn");
 	btn.addEventListener("click", function () {
 		started = true;
 		scene.background = colors[i++ % 2];
