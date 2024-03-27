@@ -62,27 +62,27 @@ function init() {
 
 	const loader = new FBXLoader();
 
-    scene.add(clouds1);
-    scene.add(clouds2);
+	scene.add(clouds1);
+	scene.add(clouds2);
 
 
 	// Terrain
-	new FBXLoader().load(`${pathProps}/terrain.fbx`, function (object) {	
-		
+	new FBXLoader().load(`${pathProps}/terrain.fbx`, function (object) {
+
 		const base_color = new THREE.TextureLoader().load(`${pathTexture}/terrain/terrain_DefaultMaterial_BaseColor.png`);
 		//const height = new THREE.TextureLoader().load(`${pathTexture}/terrain/terrain_DefaultMaterial_Height.png`);
 		const normal = new THREE.TextureLoader().load(`${pathTexture}/terrain/terrain_DefaultMaterial_Normal.png`);
 		const roughness = new THREE.TextureLoader().load(`${pathTexture}/terrain/terrain_DefaultMaterial_Roughness.png`);
 
 		const texture = new THREE.MeshStandardMaterial({
-		    map: base_color,
-		    normalMap: normal,
-		    roughnessMap: roughness,
-		    //displacementMap: height,
-		    displacementScale: 0.1,
-		    displacementBias: 0.1,
-		    roughness: 1,
-		    metalness: 0.5
+			map: base_color,
+			normalMap: normal,
+			roughnessMap: roughness,
+			//displacementMap: height,
+			displacementScale: 0.1,
+			displacementBias: 0.1,
+			roughness: 1,
+			metalness: 0.5
 		});
 
 		object.scale.set(0.1, 0.1, 0.1);
@@ -91,19 +91,19 @@ function init() {
 
 		terrain = object;
 
-        terrain.traverse(function (child) {
+		terrain.traverse(function (child) {
 
-            if (child.isMesh) {
+			if (child.isMesh) {
 				if (child.material && child.material.map !== undefined) {
 					child.material = texture;
 					child.material.needsUpdate = true;
 				}
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
-        scene.add(terrain);
-    });
+				child.castShadow = true;
+				child.receiveShadow = true;
+			}
+		});
+		scene.add(terrain);
+	});
 
 
 	// model
@@ -143,8 +143,7 @@ function init() {
 	btn.addEventListener("click", function (e) {
 		started = true;
 		nbClick++;
-		if (currentSpeed <= maxSpeed)
-		{
+		if (currentSpeed <= maxSpeed) {
 			if (stopped) {
 				currentSpeed = -0.001;
 				stopped = false;
@@ -153,20 +152,7 @@ function init() {
 		}
 		if (Math.floor(action.timeScale) < maxTimescale)
 			action.timeScale += 0.1;
-		const clickEffect = document.querySelector(".click-effect");
-		if (clickAnimationInProgress) {
-			clearTimeout(animationId);
-			clickEffect.classList.remove("effect");
-			void clickEffect.offsetWidth;
-		}
-		clickEffect.style.top = e.clientY + window.scrollY + "px";
-		clickEffect.style.left = e.clientX + window.scrollX + "px";
-		clickEffect.classList.add("effect");
-		clickAnimationInProgress = true;
-		animationId = setTimeout(() => {
-			clickEffect.classList.remove("effect");
-			clickAnimationInProgress = false;
-		}, 750);
+		createClickEffect(e, container);
 	});
 
 	setTimeout(function decrement() {
@@ -184,7 +170,21 @@ function init() {
 	}, 500);
 
 	container.appendChild(btn);
+}
 
+function onWindowResize() {
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+	renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+/**
+ * @description Create a click effect on the screen
+ * 
+ * @param {MouseEvent} e MouseEvent clicked
+ * @param {HTMLElement} container Container of the click effect
+ */
+function createClickEffect(e, container) {
 	const clickEffect = document.createElement("div");
 	clickEffect.classList.add("click-effect");
 	for (let i = 0; i < 8; i++) {
@@ -195,24 +195,36 @@ function init() {
 		clickEffect.appendChild(spike);
 	}
 	container.appendChild(clickEffect);
-}
 
-function onWindowResize() {
-	camera.aspect = window.innerWidth / window.innerHeight;
-	camera.updateProjectionMatrix();
-	renderer.setSize( window.innerWidth, window.innerHeight );
-}
+	if (clickAnimationInProgress) {
+		clearTimeout(animationId);
+		clickEffect.classList.remove("effect");
+		void clickEffect.offsetWidth;
+	}
+	clickEffect.style.top = e.clientY + window.scrollY + "px";
+	clickEffect.style.left = e.clientX + window.scrollX + "px";
+	clickEffect.classList.add("effect");
+	clickAnimationInProgress = true;
+	animationId = setTimeout(() => {
+		clickEffect.classList.remove("effect");
+		clickAnimationInProgress = false;
+	}, 750);
 
+	// delete the children after 1s
+	setTimeout(() => {
+		clickEffect.remove();
+	}, 750);
+}
 
 function generate_clouds(x, y = 150, z = 300) {
-    const cloudTexture = new THREE.TextureLoader().load('public/clouds.jpg');
-    const cloudGeometry = new THREE.SphereGeometry(15, 32, 32); // Rayon, segments horizontaux, segments verticaux
-    const cloudMaterial = new THREE.MeshLambertMaterial({ map: cloudTexture, transparent: true });
-    const cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
-    cloudMesh.position.set(x, y, z);
+	const cloudTexture = new THREE.TextureLoader().load('public/clouds.jpg');
+	const cloudGeometry = new THREE.SphereGeometry(15, 32, 32); // Rayon, segments horizontaux, segments verticaux
+	const cloudMaterial = new THREE.MeshLambertMaterial({ map: cloudTexture, transparent: true });
+	const cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
+	cloudMesh.position.set(x, y, z);
 
-    return cloudMesh;
-}	
+	return cloudMesh;
+}
 
 function animate() {
 	requestAnimationFrame(animate);
@@ -221,13 +233,13 @@ function animate() {
 		if (started == true) {
 			if (currentSpeed != 0) {
 				mixer.update(delta);
-                document.getElementsByClassName("start_screen")[0].style.display = "none";
-            }
+				document.getElementsByClassName("start_screen")[0].style.display = "none";
+			}
 			else
 				mixer.update(0);
 			// sphereGeometry.rotateX(currentSpeed);
 
-			if(terrain)
+			if (terrain)
 				terrain.rotation.z += currentSpeed;
 			if (stopped == false) {
 				clouds1.position.y += 0.15;
