@@ -153,7 +153,7 @@ function init() {
 	window.addEventListener('resize', onWindowResize);
 
 	const btn = document.createElement('button');
-	//btn.setAttribute("ontouchstart", '');
+	btn.setAttribute("ontouchstart", '');
 	btn.innerHTML = 'Run';
 	btn.id = "run-button"
 	btn.classList.add("pressBtn");
@@ -187,9 +187,6 @@ function init() {
 	}, 500);
 
 	container.appendChild(btn);
-	document.getElementById('run-button').addEventListener('touchend', function(e){
-		e.preventDefault();
-	});
 }
 
 function onWindowResize() {
