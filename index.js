@@ -61,18 +61,19 @@ function init() {
 	scene.add(dirLight);
 
 	const loader = new FBXLoader();
+	const textureLoader = new THREE.TextureLoader();
 
 	scene.add(clouds1);
 	scene.add(clouds2);
 
 
 	// Terrain
-	new FBXLoader().load(`${pathProps}/terrain.fbx`, function (object) {
-
-		const base_color = new THREE.TextureLoader().load(`${pathTexture}/terrain/terrain_DefaultMaterial_BaseColor.png`);
-		//const height = new THREE.TextureLoader().load(`${pathTexture}/terrain/terrain_DefaultMaterial_Height.png`);
-		const normal = new THREE.TextureLoader().load(`${pathTexture}/terrain/terrain_DefaultMaterial_Normal.png`);
-		const roughness = new THREE.TextureLoader().load(`${pathTexture}/terrain/terrain_DefaultMaterial_Roughness.png`);
+	loader.load(`${pathProps}/terrain.fbx`, function (object) {	
+		
+		const base_color = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_BaseColor.png`);
+		//const height = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Height.png`);
+		const normal = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Normal.png`);
+		const roughness = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Roughness.png`);
 
 		const texture = new THREE.MeshStandardMaterial({
 			map: base_color,
@@ -109,12 +110,29 @@ function init() {
 	// model
 	loader.load(`${pathProps}/perso-run.fbx`, function (object) {
 
+		// const base_color1 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_1.png`); // Number 1169
+		// const base_color2 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_2.png`); // Number 1488
+		const base_color3 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_3.png`); // Number 1945
+		// const base_color4 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_4.png`); // Number 1175
+		const height = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Height.png`);
+		const normal = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Normal.png`);
+		const roughness = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Roughness.png`);
+
+		const texturePerso = new THREE.MeshStandardMaterial({
+			map: base_color3,
+			normalMap: normal,
+			roughnessMap: roughness,
+			displacementMap: height,
+		});
+
 		object.scale.x = object.scale.y = object.scale.z = 0.15;
+		console.log(object);
 		mixer = new THREE.AnimationMixer(object);
 		action = mixer.clipAction(object.animations[0]);
 		action.play();
 		object.traverse(function (child) {
 			if (child.isMesh) {
+				child.material = texturePerso;
 				child.castShadow = true;
 				child.receiveShadow = true;
 			}
