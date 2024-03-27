@@ -95,14 +95,14 @@ function init() {
 	btn.addEventListener("click", function () {
 		started = true;
 		if (currentSpeed <= maxSpeed)
-			currentSpeed = currentSpeed - 0.0005;
+			currentSpeed = currentSpeed - 0.0008;
 		if (Math.floor(action.timeScale) < maxTimescale)
 			action.timeScale += 0.1;
 	});
 	setTimeout(function decrement() {
 		if (started) {
 			if (currentSpeed < startSpeed)
-				currentSpeed = currentSpeed + 0.0003;
+				currentSpeed = currentSpeed + 0.0008;
 			if (currentSpeed >= -0.001)
 				currentSpeed = 0;
 			if (action.timeScale > 1)
