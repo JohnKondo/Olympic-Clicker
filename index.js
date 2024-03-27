@@ -171,6 +171,9 @@ function init() {
 			action.timeScale += 0.1;
 		createClickEffect(e, container);
 	});
+	document.getElementById('run-button').addEventListener('touchend', function(e){
+		e.preventDefault();
+	});
 
 	setTimeout(function decrement() {
 		if (started) {
