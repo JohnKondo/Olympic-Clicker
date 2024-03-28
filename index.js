@@ -79,12 +79,11 @@ function init() {
 
 	// Terrain
 	loader.load(`${pathProps}/terrain.fbx`, function (object) {	
-		updateFileToLoad();
 		const base_color = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_BaseColor.png`, updateFileToLoad);
 		//const height = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Height.png`);
 		const normal = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Normal.png`, updateFileToLoad);
 		const roughness = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Roughness.png`, updateFileToLoad);
-
+		
 		const texture = new THREE.MeshStandardMaterial({
 			map: base_color,
 			normalMap: normal,
@@ -95,15 +94,15 @@ function init() {
 			roughness: 1,
 			metalness: 0.5
 		});
-
+		
 		object.scale.set(0.1, 0.1, 0.1);
 		object.position.set(0, -480, 0);
 		object.rotation.y = Math.PI / 2;
-
+		
 		terrain = object;
-
+		
 		terrain.traverse(function (child) {
-
+			
 			if (child.isMesh) {
 				if (child.material && child.material.map !== undefined) {
 					child.material = texture;
@@ -114,12 +113,12 @@ function init() {
 			}
 		});
 		scene.add(terrain);
+		updateFileToLoad();
 	});
 
 
 	// model
 	loader.load(`${pathProps}/perso-run.fbx`, function (object) {
-		updateFileToLoad();
 		// const base_color1 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_1.png`); // Number 1169
 		// const base_color2 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_2.png`); // Number 1488
 		// const base_color3 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_3.png`); // Number 1945
@@ -127,14 +126,14 @@ function init() {
 		// const height = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Height.png`);
 		const normal = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Normal.png`, updateFileToLoad);
 		const roughness = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Roughness.png`, updateFileToLoad);
-
+		
 		const texturePerso = new THREE.MeshStandardMaterial({
 			map: base_color4,
 			normalMap: normal,
 			roughnessMap: roughness,
 			// displacementMap: height,
 		});
-
+		
 		object.scale.x = object.scale.y = object.scale.z = 0.15;
 		mixer = new THREE.AnimationMixer(object);
 		action = mixer.clipAction(object.animations[0]);
@@ -147,8 +146,9 @@ function init() {
 			}
 		});
 		scene.add(object);
+		updateFileToLoad();
 	});
-
+	
 	renderer = new THREE.WebGLRenderer({ antialias: true });
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(window.innerWidth, window.innerHeight);
@@ -214,7 +214,9 @@ function onWindowResize() {
 function updateFileToLoad() {
 	fileToLoad--;
 	if (fileToLoad == 0)
-		document.getElementById('run-button').style.display = "flex";
+		setTimeout( () => {
+			document.getElementById('run-button').style.display = "flex";
+		},500);
 }
 
 /**
