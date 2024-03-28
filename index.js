@@ -31,6 +31,7 @@ const clock = new THREE.Clock();
 let mixer;
 let terrain;
 let dist = 0;
+let fileToLoad = 8;
 
 init();
 animate();
@@ -78,11 +79,11 @@ function init() {
 
 	// Terrain
 	loader.load(`${pathProps}/terrain.fbx`, function (object) {	
-		
-		const base_color = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_BaseColor.png`);
+		updateFileToLoad();
+		const base_color = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_BaseColor.png`, updateFileToLoad);
 		//const height = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Height.png`);
-		const normal = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Normal.png`);
-		const roughness = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Roughness.png`);
+		const normal = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Normal.png`, updateFileToLoad);
+		const roughness = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Roughness.png`, updateFileToLoad);
 
 		const texture = new THREE.MeshStandardMaterial({
 			map: base_color,
@@ -118,14 +119,14 @@ function init() {
 
 	// model
 	loader.load(`${pathProps}/perso-run.fbx`, function (object) {
-
+		updateFileToLoad();
 		// const base_color1 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_1.png`); // Number 1169
 		// const base_color2 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_2.png`); // Number 1488
 		// const base_color3 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_3.png`); // Number 1945
-		const base_color4 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_4.png`); // Number 1175
-		const height = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Height.png`);
-		const normal = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Normal.png`);
-		const roughness = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Roughness.png`);
+		const base_color4 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_4.png`, updateFileToLoad); // Number 1175
+		// const height = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Height.png`);
+		const normal = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Normal.png`, updateFileToLoad);
+		const roughness = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Roughness.png`, updateFileToLoad);
 
 		const texturePerso = new THREE.MeshStandardMaterial({
 			map: base_color4,
@@ -164,7 +165,8 @@ function init() {
 	const btn = document.createElement('button');
 	btn.setAttribute("ontouchstart", '');
 	btn.innerHTML = 'Run';
-	btn.id = "run-button"
+	btn.id = "run-button";
+	btn.style.display = "none";
 	btn.classList.add("pressBtn");
 	btn.addEventListener("click", function (e) {
 		started = true;
@@ -200,7 +202,6 @@ function init() {
 		}
 		setTimeout(decrement, 500)
 	}, 500);
-
 	container.appendChild(btn);
 }
 
@@ -208,6 +209,12 @@ function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 	renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function updateFileToLoad() {
+	fileToLoad--;
+	if (fileToLoad == 0)
+		document.getElementById('run-button').style.display = "flex";
 }
 
 /**
