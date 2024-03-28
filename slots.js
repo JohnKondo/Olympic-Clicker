@@ -103,12 +103,20 @@ const checkSymbols = (delay) => {
             console.log('you loose')
             document.getElementById("looseDiv").style.display = "flex";
         }
-        
         document.getElementById('run-button').style.display = "flex";
 
     }, 125 + delay * 2)
 }
 
+const reactivateButton = () => {
+    stopWheel = false
+    canSpin = true
+    btnPushed(spinBtn, false)
+    btnPushed(stopBtn, false)
+}
+
 spinBtn.addEventListener('click', spin)
 
 stopBtn.addEventListener('click', stop)
+
+export { reactivateButton };

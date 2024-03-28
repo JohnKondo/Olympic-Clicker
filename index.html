@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-		<title>Olympic Clicker</title>
-		<link rel="stylesheet" href="styles.css">
-		<style>
-			body { margin: 0; }
-		</style>
-		<script type="importmap">
+
+<head>
+	<meta charset="utf-8" name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<title>Olympic Clicker</title>
+	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="slots.css">
+	<style>
+		body {
+			margin: 0;
+		}
+	</style>
+	<script type="importmap">
 			{
 			  "imports": {
 				"three": "https://unpkg.com/three@0.162.0/build/three.module.js",
@@ -15,25 +20,224 @@
 			  }
 			}
 		</script>
-	</head>
-	<body>
-		<script>
-			document.addEventListener('touchstart', function(event) {
-				if (event.touches.length > 1)
-					event.preventDefault();
-			}, { passive: false });
+</head>
 
-			document.addEventListener('gesturestart', function(event) {
+<body>
+	<script>
+		document.addEventListener('touchstart', function (event) {
+			if (event.touches.length > 1)
 				event.preventDefault();
-			});
-		</script>
-		<div class="start_screen" style="display: flex;align-items: center; flex-direction: column;">
-			<div class="popup download-banner">
+		}, { passive: false });
 
-			</div>
-			<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygULcmljayBhc3RsZXk%3D"
-				target="_blank">Download</a>
+		document.addEventListener('gesturestart', function (event) {
+			event.preventDefault();
+		});
+	</script>
+	<div class="start_screen" style="display: flex;align-items: center; flex-direction: column;">
+		<div class="popup download-banner">
+
 		</div>
-		<script type="module" src="./index.js"></script>
-	</body>
+		<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygULcmljayBhc3RsZXk%3D" target="_blank">Download</a>
+	</div>
+	<div id="winDiv" class="msgWin" style="display: none;align-items: center; flex-direction: column;">
+		<strong style="color: green;">YOU WIN A BONUS</strong>
+	</div>
+	<div id="looseDiv" class="msgLoose" style="display: none;align-items: center; flex-direction: column;">
+		<strong style="color: red;">YOU LOOSE</strong>
+	</div>
+	<div id="slotContainer" class="container" style="display: none;">
+		<div class="slot-machine">
+			<div class="slot-machine-top">
+				<div class="machine-title">
+					JACKPOT
+				</div>
+				<div class="bulb-container top-bulb">
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+				</div>
+				<div class="bulb-container left-bulb">
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+				</div>
+				<div class="bulb-container right-bulb">
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+				</div>
+				<div class="bulb-container bottom-bulb">
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+					<div class="bulb">⬤</div>
+				</div>
+			</div>
+			<div class="slot-machine-middle">
+				<div class="spinner-frame">
+				</div>
+				<div class="spinner-shape">
+				</div>
+				<div class="spinners-container">
+					<div class="spinner-container">
+						<div class="spinner spinner-1">
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
+									alt="auto clicker bonus" /></div>
+							<div class="symbol" data-value="3"><img class="imgSlot" src="public/img/speed_transfert.png"
+									alt="speed transfert bonus" /></div>
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
+									alt="auto clicker bonus" /></div>
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
+									alt="auto clicker bonus" /></div>
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
+									alt="auto clicker bonus" /></div>
+							<div class="symbol" data-value="3"><img class="imgSlot" src="public/img/speed_transfert.png"
+									alt="speed transfert bonus" /></div>
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="4">
+								<img class="imgSlot" src="public/img/jackpot.png"
+									alt="jackpot bonus" />
+							</div>
+						</div>
+						<div class="overlay"></div>
+					</div>
+					<div class="spinner-container">
+						<div class="spinner spinner-2">
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
+									alt="auto clicker bonus" /></div>
+							<div class="symbol" data-value="3"><img class="imgSlot" src="public/img/speed_transfert.png"
+									alt="speed transfert bonus" /></div>
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
+									alt="auto clicker bonus" /></div>
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
+									alt="auto clicker bonus" /></div>
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
+									alt="auto clicker bonus" /></div>
+							<div class="symbol" data-value="3"><img class="imgSlot" src="public/img/speed_transfert.png"
+									alt="speed transfert bonus" /></div>
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="4">
+								<img class="imgSlot" src="public/img/jackpot.png"
+									alt="jackpot bonus" />
+							</div>
+						</div>
+						<div class="overlay"></div>
+					</div>
+					<div class="spinner-container">
+						<div class="spinner spinner-3" data-id="3">
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
+									alt="auto clicker bonus" /></div>
+							<div class="symbol" data-value="3"><img class="imgSlot" src="public/img/speed_transfert.png"
+									alt="speed transfert bonus" /></div>
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
+									alt="auto clicker bonus" /></div>
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
+									alt="auto clicker bonus" /></div>
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
+									alt="auto clicker bonus" /></div>
+							<div class="symbol" data-value="3"><img class="imgSlot" src="public/img/speed_transfert.png"
+									alt="speed transfert bonus" /></div>
+							<div class="symbol" data-value="1">
+								<img class="imgSlot" src="public/img/x2.png"
+									alt="speed x2 bonus" />
+							</div>
+							<div class="symbol" data-value="4">
+								<img class="imgSlot" src="public/img/jackpot.png"
+									alt="jackpot bonus" />
+							</div>
+						</div>
+						<div class="overlay">
+						</div>
+					</div>
+				</div>
+				<div class="glass-effect"></div>
+			</div>
+			<div class="slot-machine-bottom">
+				<div class="button-container">
+					<button class="spin-btn">
+						SPIN
+					</button>
+					<button class="stop-btn" style="display: none;">
+						STOP
+					</button>
+					<div class="slot-machine-footer">
+						<div class="casino-name">
+							Good Luck
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="module" src="./index.js"></script>
+	<script type="module" src="./slots.js"></script>
+</body>
+
 </html>

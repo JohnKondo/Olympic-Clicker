@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+import { reactivateButton } from './slots.js';
 
 
 let camera, scene, renderer;
@@ -173,8 +174,8 @@ function init() {
 			}
 			currentSpeed = currentSpeed - 0.0008;
 
-			console.log(currentSpeed);
-			console.log(stopped);
+			// console.log(currentSpeed);
+			// console.log(stopped);
 		}
 		if (Math.floor(action.timeScale) < maxTimescale)
 			action.timeScale += 0.1;
@@ -185,6 +186,10 @@ function init() {
 			sound.setLoop(false);
 			sound.play();
 		});
+		document.getElementById("slotContainer").style.display = "none";
+		document.getElementById("looseDiv").style.display = "none";
+		document.getElementById("winDiv").style.display = "none";
+		reactivateButton();
 	});
 
 	setTimeout(function decrement() {
@@ -283,10 +288,10 @@ function generate_clouds(index, x, y = 150, z = 300) {
  */
 function add_relay() {
 
-	console.log(dist.toFixed(1));
+	// console.log(dist.toFixed(1));
 	
 	if (dist > 5 && (dist.toFixed(1) % 5 <= 0.1)) {
-		console.log("relay added");
+		// console.log("relay added");
 		relay_block = new THREE.Mesh(new THREE.BoxGeometry(300, 200, 10), new THREE.MeshBasicMaterial({ color: '#FC2C00' , transparent: true , opacity: 0.5 }));
  
 		// const textureLoader = new THREE.TextureLoader();
@@ -337,7 +342,7 @@ function add_relay() {
 
 function detecte_collision(object1, object2) {
 
-	console.log(object2);
+	// console.log(object2);
 	let box1 = new THREE.Box3().setFromObject(object1);
 	let box2 = new THREE.Box3().setFromObject(object2);
 	return box1.intersectsBox(box2);
@@ -354,6 +359,8 @@ function update_relay() {
 			stopped = true;
 			currentSpeed = 0;
 			terrain.remove(relay_block);
+			document.getElementById('run-button').style.display = "none";
+			document.getElementById("slotContainer").style.display = "block";
 			change_relay = false;
 		}
 	}
