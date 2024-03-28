@@ -274,7 +274,7 @@ function init() {
 
 	const controls = new OrbitControls(camera, renderer.domElement);
 	controls.target.set(0, 100, 0);
-	/* controls.enabled = false; */
+	controls.enabled = false;
 	controls.update();
 
 	window.addEventListener('resize', onWindowResize);
