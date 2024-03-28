@@ -194,7 +194,7 @@ body h1 {
     }
 
     .bonus-banner {
-        top: calc(6vh - 40px);
+        top: calc(7vh - 40px);
         left: 50%;
         transform: translateX(-50%);
         width: calc(80vw - 40px);
@@ -202,7 +202,7 @@ body h1 {
     }
 
     .jackpot-banner {
-        top: calc(6vh - 40px);
+        top: calc(7vh - 40px);
         left: 50%;
         transform: translateX(-50%);
         width: calc(90vw - 40px);
