@@ -23,6 +23,9 @@ let clickAnimationInProgress = false;
 let animationId;
 let nbClick = 0;
 let nbCollision = 0;
+let bronzePiece = 0;
+let silverPiece = 0;
+let goldPiece = 0;
 
 const pathTexture = "public/assets/textures";
 const pathProps = "public/assets/props";
@@ -32,8 +35,11 @@ const clock = new THREE.Clock();
 
 let mixer;
 let terrain;
+let goldMedals;
+let silverMedals;
+let bronzeMedals;
 let dist = 0;
-let fileToLoad = 8;
+let fileToLoad = 20;
 
 init();
 animate();
@@ -120,6 +126,111 @@ function init() {
 		updateFileToLoad();
 	});
 
+	// bronze medals
+	loader.load(`${pathProps}/medaille.fbx`, function (object) {
+		const base_color = textureLoader.load(`${pathTexture}/medailles/bronze/medaille_DefaultMaterial_BaseColor.png`, updateFileToLoad);
+		const normal = textureLoader.load(`${pathTexture}/medailles/bronze/medaille_DefaultMaterial_Normal.png`, updateFileToLoad);
+		const roughness = textureLoader.load(`${pathTexture}/medailles/ARGENT/medaille_DefaultMaterial_Roughness.png`, updateFileToLoad);
+
+		const texture = new THREE.MeshStandardMaterial({
+			map: base_color,
+			normalMap: normal,
+			roughnessMap: roughness,
+			roughness: 1,
+			metalness: 0.5
+		});
+
+		object.scale.set(0.15, 0.15, 0.15);
+		object.rotation.x = Math.PI / 4;
+		object.rotation.y = Math.PI / 2;
+		object.position.set(-100, 100, 300);
+
+		bronzeMedals = object;
+
+		bronzeMedals.traverse(function (child) {
+
+			if (child.isMesh) {
+				if (child.material && child.material.map !== undefined) {
+					child.material = texture;
+				}
+				child.castShadow = true;
+				child.receiveShadow = true;
+			}
+		});
+		scene.add(bronzeMedals);
+		updateFileToLoad();
+	});
+
+	// silver medals
+	loader.load(`${pathProps}/medaille.fbx`, function (object) {
+		const base_color = textureLoader.load(`${pathTexture}/medailles/ARGENT/medaille_DefaultMaterial_BaseColor.png`, updateFileToLoad);
+		const normal = textureLoader.load(`${pathTexture}/medailles/ARGENT/medaille_DefaultMaterial_Normal.png`, updateFileToLoad);
+		const roughness = textureLoader.load(`${pathTexture}/medailles/ARGENT/medaille_DefaultMaterial_Roughness.png`, updateFileToLoad);
+
+		const texture = new THREE.MeshStandardMaterial({
+			map: base_color,
+			normalMap: normal,
+			roughnessMap: roughness,
+			roughness: 1,
+			metalness: 0.5
+		});
+
+		object.scale.set(0.15, 0.15, 0.15);
+		object.rotation.x = Math.PI / 4;
+		object.rotation.y = Math.PI / 2;
+		object.position.set(-105, 50, 300);
+
+		silverMedals = object;
+
+		silverMedals.traverse(function (child) {
+
+			if (child.isMesh) {
+				if (child.material && child.material.map !== undefined) {
+					child.material = texture;
+				}
+				child.castShadow = true;
+				child.receiveShadow = true;
+			}
+		});
+		scene.add(silverMedals);
+		updateFileToLoad();
+	});
+
+	// gold medals
+	loader.load(`${pathProps}/medaille.fbx`, function (object) {
+		const base_color = textureLoader.load(`${pathTexture}/medailles/or/medaille_DefaultMaterial_BaseColor.png`, updateFileToLoad);
+		const normal = textureLoader.load(`${pathTexture}/medailles/or/medaille_DefaultMaterial_Normal.png`, updateFileToLoad);
+		const roughness = textureLoader.load(`${pathTexture}/medailles/or/medaille_DefaultMaterial_Roughness.png`, updateFileToLoad);
+
+		const texture = new THREE.MeshStandardMaterial({
+			map: base_color,
+			normalMap: normal,
+			roughnessMap: roughness,
+			roughness: 1,
+			metalness: 0.5
+		});
+
+		object.scale.set(0.15, 0.15, 0.15);
+		object.rotation.x = Math.PI / 4;
+		object.rotation.y = Math.PI / 2;
+		object.position.set(-109, 0, 300);
+
+		goldMedals = object;
+
+		goldMedals.traverse(function (child) {
+
+			if (child.isMesh) {
+				if (child.material && child.material.map !== undefined) {
+					child.material = texture;
+				}
+				child.castShadow = true;
+				child.receiveShadow = true;
+			}
+		});
+		scene.add(goldMedals);
+		updateFileToLoad();
+	});
+
 
 	// model
 	loader.load(`${pathProps}/perso-run.fbx`, function (object) {
@@ -182,6 +293,12 @@ function init() {
 				stopped = false;
 			}
 			currentSpeed = currentSpeed - 0.0008 * speedMultiplicator;
+			speedMultiplicator !=1 ? bronzePiece += 1 : bronzePiece += 2;
+			if (bronzePiece >= 30) {
+				silverPiece++;
+				bronzePiece -= 30;
+			}
+
 		}
 		if (Math.floor(action.timeScale) < maxTimescale)
 			action.timeScale += 0.1;
