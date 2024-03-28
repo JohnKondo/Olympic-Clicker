@@ -73,7 +73,6 @@ function init() {
 	scene.add(dirLight);
 
 	// Audio
-	const audioListener = new THREE.AudioListener();
 	camera.add(audioListener);
 	const sound = new THREE.Audio(audioListener);
 	const clickAudioLoader = new THREE.AudioLoader();
@@ -83,6 +82,7 @@ function init() {
 		backgroundAudio.setLoop(true);
 		backgroundAudio.setVolume(0.5);
 		backgroundAudio.setPlaybackRate(1 + currentSpeed * -2);
+		backgroundAudio.play();
 	});
 
 	const loader = new FBXLoader();
