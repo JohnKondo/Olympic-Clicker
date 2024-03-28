@@ -23,8 +23,6 @@ let nbClick = 0;
 const pathTexture = "public/assets/textures";
 const pathProps = "public/assets/props";
 
-let clouds1 = generate_clouds(50, 200);
-let clouds2 = generate_clouds(-50);
 let relay_block;
 const clock = new THREE.Clock();
 
@@ -72,10 +70,6 @@ function init() {
 
 	const loader = new FBXLoader();
 	const textureLoader = new THREE.TextureLoader();
-
-	scene.add(clouds1);
-	scene.add(clouds2);
-
 
 	// Terrain
 	loader.load(`${pathProps}/terrain.fbx`, function (object) {	
@@ -145,6 +139,7 @@ function init() {
 				child.receiveShadow = true;
 			}
 		});
+		object.name = "perso";
 		scene.add(object);
 		updateFileToLoad();
 	});
@@ -157,7 +152,7 @@ function init() {
 
 	const controls = new OrbitControls(camera, renderer.domElement);
 	controls.target.set(0, 100, 0);
-	controls.enabled = false;
+	//controls.enabled = false;
 	controls.update();
 
 	window.addEventListener('resize', onWindowResize);
@@ -177,6 +172,9 @@ function init() {
 				stopped = false;
 			}
 			currentSpeed = currentSpeed - 0.0008;
+
+			console.log(currentSpeed);
+			console.log(stopped);
 		}
 		if (Math.floor(action.timeScale) < maxTimescale)
 			action.timeScale += 0.1;
@@ -203,6 +201,11 @@ function init() {
 		setTimeout(decrement, 500)
 	}, 500);
 	container.appendChild(btn);
+
+
+	// Clouds
+	generate_clouds(1, 50, 90);
+	generate_clouds(2, -50);
 }
 
 function onWindowResize() {
@@ -258,14 +261,21 @@ function createClickEffect(e, container) {
 	}, 750);
 }
 
-function generate_clouds(x, y = 150, z = 300) {
-	const cloudTexture = new THREE.TextureLoader().load('public/clouds.jpg');
-	const cloudGeometry = new THREE.SphereGeometry(15, 32, 32); // Rayon, segments horizontaux, segments verticaux
-	const cloudMaterial = new THREE.MeshLambertMaterial({ map: cloudTexture, transparent: true });
-	const cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
-	cloudMesh.position.set(x, y, z);
+function generate_clouds(index, x, y = 150, z = 300) {
+	// const cloudTexture = new THREE.TextureLoader().load('public/clouds.jpg');
+	// const cloudGeometry = new THREE.SphereGeometry(15, 32, 32); // Rayon, segments horizontaux, segments verticaux
+	// const cloudMaterial = new THREE.MeshLambertMaterial({ map: cloudTexture, transparent: true });
+	// const cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
 
-	return cloudMesh;
+	new FBXLoader().load(`${pathProps}/nuage.fbx`, function (object) {
+
+		object.scale.set(0.1, 0.1, 0.1);
+		object.position.set(x, y, z);
+		object.rotation.y = Math.PI / 2;
+		object.name = `cloud${index}`;
+		scene.add(object);
+		// terrain.attach(object);
+	});
 }
 
 /**
@@ -273,42 +283,98 @@ function generate_clouds(x, y = 150, z = 300) {
  */
 function add_relay() {
 
-	console.log(dist.toFixed(1) + 4 % 14);
+	console.log(dist.toFixed(1));
 	
-	if(dist.toFixed(0) == 2 && change_relay == false) {
+	if (dist > 5 && (dist.toFixed(1) % 5 <= 0.1)) {
 		console.log("relay added");
-		relay_block = new THREE.Mesh(new THREE.BoxGeometry(300, 200, 10), new THREE.MeshBasicMaterial({ color: '#FC2C00' }));
+		relay_block = new THREE.Mesh(new THREE.BoxGeometry(300, 200, 10), new THREE.MeshBasicMaterial({ color: '#FC2C00' , transparent: true , opacity: 0.5 }));
+ 
+		// const textureLoader = new THREE.TextureLoader();
+
+		// const base_color4 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_4.png`, updateFileToLoad); // Number 1175
+		// // const height = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Height.png`);
+		// const normal = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Normal.png`, updateFileToLoad);
+		// const roughness = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Roughness.png`, updateFileToLoad);
+
+		// const texturePerso = new THREE.MeshStandardMaterial({
+		// 	map: base_color4,
+		// 	normalMap: normal,
+		// 	roughnessMap: roughness,
+		// });
+
+		// new FBXLoader().load(`${pathProps}/Standing.fbx`, function (object) {
+		// 	object.scale.set(0.1, 0.1, 0.1);
+		// 	object.position.set(0, -400, 500);
+		// 	object.rotation.x = Math.PI / 3;
+		// 	object.name = "relay";
+
+		// 	object.traverse(function (child) {
+		// 		if (child.isMesh) {
+		// 			child.material = texturePerso;
+		// 			child.castShadow = true;
+		// 			child.receiveShadow = true;
+		// 		}
+		// 	});
+
+		// 	let newmixer = new THREE.AnimationMixer(object);
+		// 	const action = newmixer.clipAction(object.animations[0]);
+		// 	action.play();
+		// 	relay_block = object;
+		// 	scene.add(relay_block);
+		// 	terrain.attach(relay_block);
+		// });
+
+
+		relay_block.name = "relay";
 		relay_block.position.set(0, -200, 500);
-		relay_block.rotation.x = Math.PI / 6;
+		relay_block.rotation.x = Math.PI / 3;
 		scene.add(relay_block);
-		console.log(relay_block);
+		terrain.attach(relay_block);
+		
 		change_relay = true;
 	}
 }
 
+function detecte_collision(object1, object2) {
 
-function move_relay() {
+	console.log(object2);
+	let box1 = new THREE.Box3().setFromObject(object1);
+	let box2 = new THREE.Box3().setFromObject(object2);
+	return box1.intersectsBox(box2);
+}
 
-	if(change_relay == true && currentSpeed != 0) {
-		relay_block.position.z -= 1.3;
-		relay_block.position.y += 0.8;
-		relay_block.rotation.x -= 0.001;
 
-		if(relay_block.position.z.toFixed(0) == 76) {
-			scene.remove(relay_block);
+function update_relay() {
+
+	if (change_relay == true && relay_block) {
+		let check_collision = detecte_collision(scene.getObjectByName("perso"), scene.getObjectByName("relay"));
+
+		if(check_collision == true) {
+			console.log("collision detected");
+			stopped = true;
 			currentSpeed = 0;
-			document.getElementsByClassName("start_screen")[0].style.display = "inline-block";
+			terrain.remove(relay_block);
 			change_relay = false;
 		}
+	}
+
+	else {
+
+		add_relay();
 	}
 }
 
 
+
 function animate() {
 	requestAnimationFrame(animate);
+	let clouds1 = scene.getObjectByName("cloud1");
+	let clouds2 = scene.getObjectByName("cloud2");
+
 	const delta = clock.getDelta();
 	if (mixer) {
 		if (started == true) {
+
 			if (currentSpeed != 0) {
 				mixer.update(delta);
 				dist += delta;
@@ -324,17 +390,16 @@ function animate() {
 				clouds1.position.y += 0.15;
 				clouds2.position.y += 0.15;
 			}
-			if (clouds1.position.y > 470) {
+			if (clouds1.position.y > 370) {
 				clouds1.position.x = Math.round((Math.random() * (140 - (-140))) + (-140));
-				clouds1.position.y = 147;
+				clouds1.position.y = 90;
 			}
-			if (clouds2.position.y > 470) {
+			if (clouds2.position.y > 370) {
 				clouds2.position.x = Math.round((Math.random() * (140 - (-140))) + (-140));
-				clouds2.position.y = 147;
+				clouds2.position.y = 130;
 			}
 			/* console.log(dist.toFixed(1)); */
-			add_relay();
-			move_relay();
+			update_relay();
 
 			// if (Math.round(dist) % 9 == 0)
 			// 	scene.background = colors[Math.round(dist) % 9];
