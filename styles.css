@@ -171,3 +171,43 @@ body h1 {
     left: 50%;
     pointer-events: none;
 }
+
+/* Smartphone styles */
+@media only screen and (max-width: 600px) {
+    .popup {
+        background-color: #fe7600;
+        border-color: #570014;
+        border-width: 15px;
+        border-style: solid;
+        border-radius: 40px;
+        position: fixed;
+    }
+
+    .download-banner {
+        top: calc(10vh - 40px);
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(80vw - 40px);
+        height: 150px;
+    }
+}
+
+/* Computer styles */
+@media only screen and (min-width: 601px) {
+    .popup {
+        background-color: #fe7600;
+        border-color: #570014;
+        border-width: 25px;
+        border-style: solid;
+        border-radius: 40px;
+        position: fixed;
+    }
+
+    .download-banner {
+        top: calc(10vh - 40px);
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(80vw - 40px);
+        height: 200px;
+    }
+}
