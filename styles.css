@@ -28,6 +28,7 @@
     -webkit-appearance: none;
 }
 
+
 button {
     user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -61,6 +62,20 @@ body h1 {
     font-size: 72px;
     color: #9b9b9b;
     text-align: center;
+}
+
+
+.loose {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
 .msgLoose, .msgWin {
@@ -193,6 +208,11 @@ body h1 {
         /*height: calc(150px - 40px);*/
     }
 
+    .loose img {
+        width: calc(90vw - 40px);
+        height: auto;
+    }
+
     .bonus-banner {
         top: calc(7vh - 40px);
         left: 50%;
@@ -233,6 +253,11 @@ body h1 {
         transform: translateX(-50%);
         width: calc(470px - 40px);
         /*height: calc(200px - 40px);*/
+    }
+
+    .loose img {
+        width: 20%;
+        height: 40%;
     }
 
     .bonus-banner {

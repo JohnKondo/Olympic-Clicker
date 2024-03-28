@@ -26,6 +26,7 @@ let nbCollision = 0;
 let bronzePiece = 0;
 let silverPiece = 0;
 let goldPiece = 0;
+let timer = 0;
 
 const pathTexture = "public/assets/textures";
 const pathProps = "public/assets/props";
@@ -273,7 +274,7 @@ function init() {
 
 	const controls = new OrbitControls(camera, renderer.domElement);
 	controls.target.set(0, 100, 0);
-	controls.enabled = false;
+	/* controls.enabled = false; */
 	controls.update();
 
 	window.addEventListener('resize', onWindowResize);
@@ -290,6 +291,7 @@ function init() {
 		if (currentSpeed <= maxSpeed) {
 			if (stopped) {
 				currentSpeed = -0.001;
+				timer = Date.now();
 				stopped = false;
 			}
 			currentSpeed = currentSpeed - 0.0008 * speedMultiplicator;
@@ -410,52 +412,51 @@ function generate_clouds(index, x, y = 150, z = 300) {
  * @description A partir de la position actuelle + 4, on ajoute un relay qui va stopper le personnage
  */
 function add_relay() {
-	if (dist > 5 && (dist.toFixed(1) % 5 <= 0.1)) {
-		relay_block = new THREE.Mesh(new THREE.BoxGeometry(300, 200, 10), new THREE.MeshBasicMaterial({ color: '#FC2C00' , transparent: true , opacity: 0.5 }));
 
-		// const textureLoader = new THREE.TextureLoader();
+	relay_block = new THREE.Mesh(new THREE.BoxGeometry(300, 200, 10), new THREE.MeshBasicMaterial({ color: '#FC2C00' , transparent: true , opacity: 0.5 }));
 
-		// const base_color4 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_4.png`, updateFileToLoad); // Number 1175
-		// // const height = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Height.png`);
-		// const normal = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Normal.png`, updateFileToLoad);
-		// const roughness = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Roughness.png`, updateFileToLoad);
+	// const textureLoader = new THREE.TextureLoader();
 
-		// const texturePerso = new THREE.MeshStandardMaterial({
-		// 	map: base_color4,
-		// 	normalMap: normal,
-		// 	roughnessMap: roughness,
-		// });
+	// const base_color4 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_4.png`, updateFileToLoad); // Number 1175
+	// // const height = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Height.png`);
+	// const normal = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Normal.png`, updateFileToLoad);
+	// const roughness = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Roughness.png`, updateFileToLoad);
 
-		// new FBXLoader().load(`${pathProps}/Standing.fbx`, function (object) {
-		// 	object.scale.set(0.1, 0.1, 0.1);
-		// 	object.position.set(0, -400, 500);
-		// 	object.rotation.x = Math.PI / 3;
-		// 	object.name = "relay";
+	// const texturePerso = new THREE.MeshStandardMaterial({
+	// 	map: base_color4,
+	// 	normalMap: normal,
+	// 	roughnessMap: roughness,
+	// });
 
-		// 	object.traverse(function (child) {
-		// 		if (child.isMesh) {
-		// 			child.material = texturePerso;
-		// 			child.castShadow = true;
-		// 			child.receiveShadow = true;
-		// 		}
-		// 	});
+	// new FBXLoader().load(`${pathProps}/Standing.fbx`, function (object) {
+	// 	object.scale.set(0.1, 0.1, 0.1);
+	// 	object.position.set(0, -400, 500);
+	// 	object.rotation.x = Math.PI / 3;
+	// 	object.name = "relay";
 
-		// 	let newmixer = new THREE.AnimationMixer(object);
-		// 	const action = newmixer.clipAction(object.animations[0]);
-		// 	action.play();
-		// 	relay_block = object;
-		// 	scene.add(relay_block);
-		// 	terrain.attach(relay_block);
-		// });
+	// 	object.traverse(function (child) {
+	// 		if (child.isMesh) {
+	// 			child.material = texturePerso;
+	// 			child.castShadow = true;
+	// 			child.receiveShadow = true;
+	// 		}
+	// 	});
 
-		relay_block.name = "relay";
-		relay_block.position.set(0, -200, 500);
-		relay_block.rotation.x = Math.PI / 3;
-		scene.add(relay_block);
-		terrain.attach(relay_block);
+	// 	let newmixer = new THREE.AnimationMixer(object);
+	// 	const action = newmixer.clipAction(object.animations[0]);
+	// 	action.play();
+	// 	relay_block = object;
+	// 	scene.add(relay_block);
+	// 	terrain.attach(relay_block);
+	// });
 
-		change_relay = true;
-	}
+	relay_block.name = "relay";
+	relay_block.position.set(0, -200, 500);
+	relay_block.rotation.x = Math.PI / 3;
+	scene.add(relay_block);
+	terrain.attach(relay_block);
+
+	change_relay = true;
 }
 
 function detecte_collision(object1, object2) {
@@ -479,15 +480,27 @@ function update_relay() {
 				speedMultiplicator = 1;
             console.log("collision detected");
             stopped = true;
+			change_relay = false;
             currentSpeed = 0;
             terrain.remove(relay_block);
             document.getElementById('run-button').style.display = "none";
             document.getElementById("slotContainer").style.display = "block";
-            change_relay = false;
+            
         }
+		else {
+			if(getTime() %8 == 0 && getTime() != 0) {
+				isStarted = false;
+				currentSpeed = 0;
+				stopped = true;
+				document.getElementById("looseGame").style.display = "flex";
+				document.getElementById("download-banner").style.display = "flex";
+				document.getElementById('run-button').style.display = "none";
+			}
+		}
     }
     else {
-        add_relay();
+		if(getTime() %5 == 0 && getTime() != 0 && !stopped)
+			add_relay();
     }
 }
 
@@ -542,5 +555,11 @@ function startGame() {
 	if (isStarted == false) {
 		document.getElementById('download-banner').style.display = "none";
 		isStarted = true;
+		timer = Date.now();
 	}
+}
+
+function getTime() {
+	let second = Math.floor((Date.now() - timer) / 1000);
+	return second;
 }
