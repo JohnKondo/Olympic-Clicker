@@ -8,18 +8,19 @@ import { reactivateButton } from './slots.js';
 let camera, scene, renderer;
 let colors = [new THREE.Color(0x87ceeb), new THREE.Color(0x87cefa)];
 let i = 0;
-let started = false;
+let isStarted = false;
 let stopped = false;
 const startSpeed = -0.001;
 let currentSpeed = -0.001;
 const maxSpeed = 0.00;
 const maxTimescale = 2.00;
+const audioListener = new THREE.AudioListener();
+const backgroundAudio = new THREE.Audio(audioListener);
 let action;
 let change_relay = false;
 let clickAnimationInProgress = false;
 let animationId;
 let nbClick = 0;
-
 
 const pathTexture = "public/assets/textures";
 const pathProps = "public/assets/props";
@@ -67,18 +68,24 @@ function init() {
 	camera.add(audioListener);
 	const sound = new THREE.Audio(audioListener);
 	const clickAudioLoader = new THREE.AudioLoader();
-
+	const backgroundAudioLoader = new THREE.AudioLoader();
+	backgroundAudioLoader.load('public/assets/sounds/background-music.mp3', function (buffer) {
+		backgroundAudio.setBuffer(buffer);
+		backgroundAudio.setLoop(true);
+		backgroundAudio.setVolume(0.5);
+		backgroundAudio.setPlaybackRate(1 + currentSpeed * -2);
+	});
 
 	const loader = new FBXLoader();
 	const textureLoader = new THREE.TextureLoader();
 
 	// Terrain
-	loader.load(`${pathProps}/terrain.fbx`, function (object) {	
+	loader.load(`${pathProps}/terrain.fbx`, function (object) {
 		const base_color = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_BaseColor.png`, updateFileToLoad);
 		//const height = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Height.png`);
 		const normal = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Normal.png`, updateFileToLoad);
 		const roughness = textureLoader.load(`${pathTexture}/terrain/terrain_DefaultMaterial_Roughness.png`, updateFileToLoad);
-		
+
 		const texture = new THREE.MeshStandardMaterial({
 			map: base_color,
 			normalMap: normal,
@@ -89,15 +96,15 @@ function init() {
 			roughness: 1,
 			metalness: 0.5
 		});
-		
+
 		object.scale.set(0.1, 0.1, 0.1);
 		object.position.set(0, -480, 0);
 		object.rotation.y = Math.PI / 2;
-		
+
 		terrain = object;
-		
+
 		terrain.traverse(function (child) {
-			
+
 			if (child.isMesh) {
 				if (child.material && child.material.map !== undefined) {
 					child.material = texture;
@@ -121,14 +128,14 @@ function init() {
 		// const height = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Height.png`);
 		const normal = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Normal.png`, updateFileToLoad);
 		const roughness = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Roughness.png`, updateFileToLoad);
-		
+
 		const texturePerso = new THREE.MeshStandardMaterial({
 			map: base_color4,
 			normalMap: normal,
 			roughnessMap: roughness,
 			// displacementMap: height,
 		});
-		
+
 		object.scale.x = object.scale.y = object.scale.z = 0.15;
 		mixer = new THREE.AnimationMixer(object);
 		action = mixer.clipAction(object.animations[0]);
@@ -144,7 +151,7 @@ function init() {
 		scene.add(object);
 		updateFileToLoad();
 	});
-	
+
 	renderer = new THREE.WebGLRenderer({ antialias: true });
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(window.innerWidth, window.innerHeight);
@@ -153,7 +160,7 @@ function init() {
 
 	const controls = new OrbitControls(camera, renderer.domElement);
 	controls.target.set(0, 100, 0);
-	//controls.enabled = false;
+	controls.enabled = false;
 	controls.update();
 
 	window.addEventListener('resize', onWindowResize);
@@ -165,7 +172,7 @@ function init() {
 	btn.style.display = "none";
 	btn.classList.add("pressBtn");
 	btn.addEventListener("click", function (e) {
-		started = true;
+		startGame()
 		nbClick++;
 		if (currentSpeed <= maxSpeed) {
 			if (stopped) {
@@ -173,16 +180,13 @@ function init() {
 				stopped = false;
 			}
 			currentSpeed = currentSpeed - 0.0008;
-
-			// console.log(currentSpeed);
-			// console.log(stopped);
 		}
 		if (Math.floor(action.timeScale) < maxTimescale)
 			action.timeScale += 0.1;
 		createClickEffect(e, container);
 		clickAudioLoader.load('public/assets/sounds/click.wav', function (buffer) {
 			sound.setBuffer(buffer);
-			sound.setVolume(0.5);
+			sound.setVolume(0.1);
 			sound.setLoop(false);
 			sound.play();
 		});
@@ -193,7 +197,7 @@ function init() {
 	});
 
 	setTimeout(function decrement() {
-		if (started) {
+		if (isStarted) {
 			if (currentSpeed < startSpeed)
 				currentSpeed = currentSpeed + 0.0008;
 			if (currentSpeed >= -0.001 && nbClick >= 3) {
@@ -222,9 +226,9 @@ function onWindowResize() {
 function updateFileToLoad() {
 	fileToLoad--;
 	if (fileToLoad == 0)
-		setTimeout( () => {
+		setTimeout(() => {
 			document.getElementById('run-button').style.display = "flex";
-		},500);
+		}, 500);
 }
 
 /**
@@ -287,13 +291,9 @@ function generate_clouds(index, x, y = 150, z = 300) {
  * @description A partir de la position actuelle + 4, on ajoute un relay qui va stopper le personnage
  */
 function add_relay() {
-
-	// console.log(dist.toFixed(1));
-	
 	if (dist > 5 && (dist.toFixed(1) % 5 <= 0.1)) {
-		// console.log("relay added");
 		relay_block = new THREE.Mesh(new THREE.BoxGeometry(300, 200, 10), new THREE.MeshBasicMaterial({ color: '#FC2C00' , transparent: true , opacity: 0.5 }));
- 
+
 		// const textureLoader = new THREE.TextureLoader();
 
 		// const base_color4 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_4.png`, updateFileToLoad); // Number 1175
@@ -329,13 +329,12 @@ function add_relay() {
 		// 	terrain.attach(relay_block);
 		// });
 
-
 		relay_block.name = "relay";
 		relay_block.position.set(0, -200, 500);
 		relay_block.rotation.x = Math.PI / 3;
 		scene.add(relay_block);
 		terrain.attach(relay_block);
-		
+
 		change_relay = true;
 	}
 }
@@ -348,40 +347,36 @@ function detecte_collision(object1, object2) {
 	return box1.intersectsBox(box2);
 }
 
-
 function update_relay() {
 
-	if (change_relay == true && relay_block) {
-		let check_collision = detecte_collision(scene.getObjectByName("perso"), scene.getObjectByName("relay"));
+    if (change_relay == true && relay_block) {
+        let check_collision = detecte_collision(scene.getObjectByName("perso"), scene.getObjectByName("relay"));
 
-		if(check_collision == true) {
-			console.log("collision detected");
-			stopped = true;
-			currentSpeed = 0;
-			terrain.remove(relay_block);
-			document.getElementById('run-button').style.display = "none";
-			document.getElementById("slotContainer").style.display = "block";
-			change_relay = false;
-		}
-	}
-
-	else {
-
-		add_relay();
-	}
+        if(check_collision == true) {
+            console.log("collision detected");
+            stopped = true;
+            currentSpeed = 0;
+            terrain.remove(relay_block);
+            document.getElementById('run-button').style.display = "none";
+            document.getElementById("slotContainer").style.display = "block";
+            change_relay = false;
+        }
+    }
+    else {
+        add_relay();
+    }
 }
 
 
-
 function animate() {
+	backgroundAudio.setPlaybackRate(1 + currentSpeed * -2);
 	requestAnimationFrame(animate);
 	let clouds1 = scene.getObjectByName("cloud1");
 	let clouds2 = scene.getObjectByName("cloud2");
 
 	const delta = clock.getDelta();
 	if (mixer) {
-		if (started == true) {
-
+		if (isStarted == true) {
 			if (currentSpeed != 0) {
 				mixer.update(delta);
 				dist += delta;
@@ -417,4 +412,11 @@ function animate() {
 			mixer.update(0);
 	}
 	renderer.render(scene, camera);
+}
+
+function startGame() {
+	if (isStarted == false) {
+		document.getElementById('download-banner').style.display = "none";
+		isStarted = true;
+	}
 }

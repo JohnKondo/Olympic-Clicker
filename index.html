@@ -34,11 +34,19 @@
 		});
 	</script>
 	<div class="start_screen" style="display: flex;align-items: center; flex-direction: column;">
-		<div class="popup download-banner">
-
+		<div class="popup title-banner">
+			<img class="img-title" src="/public/title.png" alt="Olympic Clicker">
 		</div>
-		<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygULcmljayBhc3RsZXk%3D" target="_blank">Download</a>
 	</div>
+	<div class="download-banner" id="download-banner">
+		<span>Download now and get 10 golden medails!</span>
+		<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygULcmljayBhc3RsZXk%3D" target="_blank">
+			<dotlottie-player src="https://lottie.host/f6bd5e42-dc1c-4288-905f-b3094cbbf5c7/YovYYW3e7b.json"
+				background="transparent" speed="1" style="width: 90px; height: 90px;" loop autoplay></dotlottie-player>
+		</a>
+	</div>
+
+
 	<div id="winDiv" class="msgWin" style="display: none;align-items: center; flex-direction: column;">
 		<strong style="color: green;">YOU WIN A BONUS</strong>
 	</div>
@@ -238,6 +246,7 @@
 	</div>
 	<script type="module" src="./index.js"></script>
 	<script type="module" src="./slots.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 </body>
 
 </html>

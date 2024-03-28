@@ -75,7 +75,7 @@ body h1 {
 }
 
 .start_screen {
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
     left: 0;
@@ -83,20 +83,11 @@ body h1 {
     text-align: center;
     width: 100%;
     height: 100%;
+
     h1 {
         color: white;
         font-size: 40px;
         margin-top: 20px;
-    }
-    a {
-        border-radius: 30px;
-        background-color: red;
-        font-size: 20px;
-        color : white;
-        padding: 10px;
-        text-decoration: none;
-        border: 5px solid #800000;
-        box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.3);
     }
 
 }
@@ -194,13 +185,18 @@ body h1 {
         position: fixed;
     }
 
-    .download-banner {
+    .title-banner {
         top: calc(10vh - 40px);
         left: 50%;
         transform: translateX(-50%);
         width: calc(80vw - 40px);
-        height: 150px;
+        height: calc(150px - 40px);
     }
+    .img-title {
+        width: auto;
+        height: 80px;
+        margin: 20px;
+    }   
 }
 
 /* Computer styles */
@@ -214,11 +210,34 @@ body h1 {
         position: fixed;
     }
 
-    .download-banner {
+    .title-banner {
         top: calc(10vh - 40px);
         left: 50%;
         transform: translateX(-50%);
-        width: calc(80vw - 40px);
-        height: 200px;
+        width: calc(470px - 40px);
+        height: calc(200px - 40px);
     }
+    .img-title {
+        width: auto;
+        height: 120px;
+        margin: 20px;
+    }
+}
+
+.download-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1000;
+    font-size: large;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
 }
