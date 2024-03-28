@@ -12,7 +12,8 @@ let isStarted = false;
 let stopped = false;
 const startSpeed = -0.001;
 let currentSpeed = -0.001;
-const maxSpeed = 0.00;
+let speedMultiplicator = 1;
+const maxSpeed = 0.1;
 const maxTimescale = 2.00;
 const audioListener = new THREE.AudioListener();
 const backgroundAudio = new THREE.Audio(audioListener);
@@ -21,6 +22,7 @@ let change_relay = false;
 let clickAnimationInProgress = false;
 let animationId;
 let nbClick = 0;
+let nbCollision = 0;
 
 const pathTexture = "public/assets/textures";
 const pathProps = "public/assets/props";
@@ -179,7 +181,7 @@ function init() {
 				currentSpeed = -0.001;
 				stopped = false;
 			}
-			currentSpeed = currentSpeed - 0.0008;
+			currentSpeed = currentSpeed - 0.0008 * speedMultiplicator;
 		}
 		if (Math.floor(action.timeScale) < maxTimescale)
 			action.timeScale += 0.1;
@@ -387,7 +389,7 @@ function animate() {
 			// sphereGeometry.rotateX(currentSpeed);
 
 			if (terrain)
-				terrain.rotation.z += currentSpeed;
+				terrain.rotation.z += currentSpeed * speedMultiplicator;
 			if (stopped == false) {
 				clouds1.position.y += 0.15;
 				clouds2.position.y += 0.15;
