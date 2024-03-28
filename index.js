@@ -355,6 +355,11 @@ function update_relay() {
         let check_collision = detecte_collision(scene.getObjectByName("perso"), scene.getObjectByName("relay"));
 
         if(check_collision == true) {
+			nbCollision++;
+			if (nbCollision == 1)
+				speedMultiplicator = 1.6;
+			else
+				speedMultiplicator = 1;
             console.log("collision detected");
             stopped = true;
             currentSpeed = 0;
