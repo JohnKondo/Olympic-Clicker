@@ -194,7 +194,7 @@ body h1 {
     }
 
     .bonus-banner {
-        top: calc(10vh - 40px);
+        top: calc(5vh - 40px);
         left: 50%;
         transform: translateX(-50%);
         width: calc(80vw - 40px);
@@ -202,7 +202,7 @@ body h1 {
     }
 
     .jackpot-banner {
-        top: calc(10vh - 40px);
+        top: calc(5vh - 40px);
         left: 50%;
         transform: translateX(-50%);
         width: calc(90vw - 40px);
@@ -239,16 +239,16 @@ body h1 {
         top: calc(10vh - 40px);
         left: 50%;
         transform: translateX(-50%);
-        width: calc(470px - 40px);
-        height: calc(200px - 40px);
+        width: calc(350px - 40px);
+        height: calc(180px - 40px);
     }
 
     .jackpot-banner {
         top: calc(10vh - 40px);
         left: 50%;
         transform: translateX(-50%);
-        width: calc(470px - 40px);
-        height: calc(200px - 40px);
+        width: calc(405px - 40px);
+        height: calc(180px - 40px);
     }
 
     .img-title {
