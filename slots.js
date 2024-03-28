@@ -5,6 +5,7 @@ const spinBtn = document.querySelector('.spin-btn'),
     spin3 = document.querySelector('.spinner-3'),
     spinSymbols = Array.from(spin1.querySelectorAll('.symbol'))
 
+let nbSpin = 0;
 
 let stopWheel = false,
     canSpin = true,
@@ -24,13 +25,14 @@ const spinners = [{
 },
 {
     id: spin3,
-    delaySpin: 100,
+    delaySpin: 150,
     acceleration: 1.075,
     rotSpin: 0
 }]
 
 const spin = () => {
     if (canSpin) {
+        nbSpin++;
         for (let i = 0; i < spinners.length; i++) {
             spinWheel(spinners[i])
         }
@@ -39,11 +41,11 @@ const spin = () => {
             document.querySelector('.machine-title').classList.remove('jackpot')
             jackpot = false
         }
+        setTimeout(function () {
+            stopBtn.click();
+        }, nbSpin == 1 ? 500 : 1100);
     }
     canSpin = false
-    setTimeout(function () {
-        stopBtn.click();
-    }, 800);
 }
 
 const stop = () => {
@@ -94,13 +96,11 @@ const checkSymbols = (delay) => {
             symbol3 = getSymbol(2)
 
         if (symbol1 === symbol2 && symbol1 === symbol3) {
-            console.log('you win')
             document.querySelector('.machine-title').classList.add('jackpot')
             jackpot = true;
             document.getElementById("winDiv").style.display = "flex";
         }
         else {
-            console.log('you loose')
             document.getElementById("looseDiv").style.display = "flex";
         }
         document.getElementById('run-button').style.display = "flex";
