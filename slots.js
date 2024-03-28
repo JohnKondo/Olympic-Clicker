@@ -101,6 +101,8 @@ const checkSymbols = (delay) => {
             document.getElementById("winDiv").style.display = "flex";
         }
         else {
+            document.querySelector('.machine-title').classList.add('jackpot')
+            jackpot = true;
             document.getElementById("looseDiv").style.display = "flex";
         }
         document.getElementById('run-button').style.display = "flex";
@@ -109,6 +111,8 @@ const checkSymbols = (delay) => {
 }
 
 const reactivateButton = () => {
+    document.querySelector('.machine-title').classList.remove('jackpot');
+    jackpot = false;
     stopWheel = false
     canSpin = true
     btnPushed(spinBtn, false)
