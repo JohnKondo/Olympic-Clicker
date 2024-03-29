@@ -45,7 +45,7 @@ let goldMedals;
 let silverMedals;
 let bronzeMedals;
 let dist = 0;
-let fileToLoad = 20;
+let fileToLoad = 27;
 let timer = 0;
 
 init();
