@@ -281,12 +281,22 @@ function init() {
 
 	window.addEventListener('resize', onWindowResize);
 
-	const btn = document.createElement('button');
+	//const btn = document.createElement('button');
+	const btn = document.createElement('a');
+	const imgBtn = document.createElement('img');
+	imgBtn.src = "public/assets/img/RUN_off.png";
+	imgBtn.classList.add("pressBtn");
+	btn.appendChild(imgBtn);
 	btn.setAttribute("ontouchstart", '');
-	btn.innerHTML = 'Run';
 	btn.id = "run-button";
-	btn.style.display = "none";
+	//btn.style.display = "none";
 	btn.classList.add("pressBtn");
+	btn.addEventListener("mousedown", function () {
+		imgBtn.src = "public/assets/img/RUN_on.png";
+	});
+	btn.addEventListener("mouseup", function () {
+		imgBtn.src = "public/assets/img/RUN_off.png";
+	});
 	btn.addEventListener("click", function (e) {
 		startGame()
 		nbClick++;
@@ -480,7 +490,7 @@ function update_relay() {
 				speedMultiplicator = 1.6;
 			else
 				speedMultiplicator = 1;
-			console.log("collision detected");
+			//console.log("collision detected");
 			stopped = true;
 			currentSpeed = 0;
 			terrain.remove(relay_block);
