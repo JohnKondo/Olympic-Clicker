@@ -707,7 +707,7 @@ function endGame() {
 	document.getElementById('run-button').style.display = "none";
 	if (loose == true) {
 		setTimeout( () => {
-			// document.getElementById("endText").textContent = "YOU LOOSE";
+			document.getElementById("spinDiv").style.display = "none";
 			slotContainerDom.style.display = "none";
 			document.getElementById("end_screen").style.display = "flex";
 			document.getElementById("end-download-banner").style.display = "flex";
