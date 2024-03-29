@@ -297,6 +297,12 @@ function init() {
 	btn.addEventListener("mouseup", function () {
 		imgBtn.src = "public/assets/img/RUN_off.png";
 	});
+	btn.addEventListener("touchstart", function () {
+		imgBtn.src = "public/assets/img/RUN_on.png";
+	});
+	btn.addEventListener("touchend", function () {
+		imgBtn.src = "public/assets/img/RUN_off.png";
+	});
 	btn.addEventListener("click", function (e) {
 		startGame()
 		nbClick++;
