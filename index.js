@@ -45,6 +45,7 @@ let silverMedals;
 let bronzeMedals;
 let dist = 0;
 let fileToLoad = 20;
+let timer = 0;
 
 init();
 animate();
@@ -310,6 +311,7 @@ function init() {
 		if (currentSpeed <= maxSpeed) {
 			if (stopped) {
 				currentSpeed = -0.001;
+				timer = Date.now();
 				stopped = false;
 			}
 			currentSpeed = currentSpeed - 0.0008 * speedMultiplicator;
@@ -418,82 +420,92 @@ function createClickEffect(e, container) {
 	}, 750);
 }
 
-function generate_clouds(index, x, y = 150, z = 300) {
-	// const cloudTexture = new THREE.TextureLoader().load('public/clouds.jpg');
-	// const cloudGeometry = new THREE.SphereGeometry(15, 32, 32); // Rayon, segments horizontaux, segments verticaux
-	// const cloudMaterial = new THREE.MeshLambertMaterial({ map: cloudTexture, transparent: true });
-	// const cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
+
+/**
+ * @description Génère un nuage dans la scène
+ * @param {Number|String} id Identifiant du nuage
+ * @param {Number} x Position x (horizontal) du nuage
+ * @param {Number} y Position y (vertical) du nuage
+ * @param {Number} z Position z (profondeur) du nuage
+ */
+function generate_clouds(id, x, y = 150, z = 300) {
 
 	new FBXLoader().load(`${pathProps}/nuage.fbx`, function (object) {
 
 		object.scale.set(0.1, 0.1, 0.1);
 		object.position.set(x, y, z);
 		object.rotation.y = Math.PI / 2;
-		object.name = `cloud${index}`;
+		object.name = `cloud${id}`;
 		scene.add(object);
-		// terrain.attach(object);
 	});
 }
 
+
 /**
- * @description A partir de la position actuelle + 4, on ajoute un relay qui va stopper le personnage
+ * @description Créer un relais sur la piste
  */
 function add_relay() {
-	if (dist > 5 && (dist.toFixed(1) % 5 <= 0.1)) {
-		relay_block = new THREE.Mesh(new THREE.BoxGeometry(300, 200, 10), new THREE.MeshBasicMaterial({ color: '#FC2C00', transparent: true, opacity: 0.5 }));
 
-		// const textureLoader = new THREE.TextureLoader();
+	relay_block = new THREE.Mesh(new THREE.BoxGeometry(300, 200, 10), new THREE.MeshBasicMaterial({ color: '#FC2C00', transparent: true, opacity: 0.5 }));
 
-		// const base_color4 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_4.png`, updateFileToLoad); // Number 1175
-		// // const height = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Height.png`);
-		// const normal = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Normal.png`, updateFileToLoad);
-		// const roughness = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Roughness.png`, updateFileToLoad);
+	// const textureLoader = new THREE.TextureLoader();
 
-		// const texturePerso = new THREE.MeshStandardMaterial({
-		// 	map: base_color4,
-		// 	normalMap: normal,
-		// 	roughnessMap: roughness,
-		// });
+	// const base_color4 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_4.png`, updateFileToLoad); // Number 1175
+	// // const height = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Height.png`);
+	// const normal = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Normal.png`, updateFileToLoad);
+	// const roughness = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Roughness.png`, updateFileToLoad);
 
-		// new FBXLoader().load(`${pathProps}/Standing.fbx`, function (object) {
-		// 	object.scale.set(0.1, 0.1, 0.1);
-		// 	object.position.set(0, -400, 500);
-		// 	object.rotation.x = Math.PI / 3;
-		// 	object.name = "relay";
+	// const texturePerso = new THREE.MeshStandardMaterial({
+	// 	map: base_color4,
+	// 	normalMap: normal,
+	// 	roughnessMap: roughness,
+	// });
 
-		// 	object.traverse(function (child) {
-		// 		if (child.isMesh) {
-		// 			child.material = texturePerso;
-		// 			child.castShadow = true;
-		// 			child.receiveShadow = true;
-		// 		}
-		// 	});
+	// new FBXLoader().load(`${pathProps}/Standing.fbx`, function (object) {
+	// 	object.scale.set(0.1, 0.1, 0.1);
+	// 	object.position.set(0, -400, 500);
+	// 	object.rotation.x = Math.PI / 3;
+	// 	object.name = "relay";
 
-		// 	let newmixer = new THREE.AnimationMixer(object);
-		// 	const action = newmixer.clipAction(object.animations[0]);
-		// 	action.play();
-		// 	relay_block = object;
-		// 	scene.add(relay_block);
-		// 	terrain.attach(relay_block);
-		// });
+	// 	object.traverse(function (child) {
+	// 		if (child.isMesh) {
+	// 			child.material = texturePerso;
+	// 			child.castShadow = true;
+	// 			child.receiveShadow = true;
+	// 		}
+	// 	});
 
-		relay_block.name = "relay";
-		relay_block.position.set(0, -200, 500);
-		relay_block.rotation.x = Math.PI / 3;
-		scene.add(relay_block);
-		terrain.attach(relay_block);
+	// 	let newmixer = new THREE.AnimationMixer(object);
+	// 	const action = newmixer.clipAction(object.animations[0]);
+	// 	action.play();
+	// 	relay_block = object;
+	// 	scene.add(relay_block);
+	// 	terrain.attach(relay_block);
+	// });
 
-		change_relay = true;
-	}
+	relay_block.name = "relay";
+	relay_block.position.set(0, -200, 500);
+	relay_block.rotation.x = Math.PI / 3;
+	scene.add(relay_block);
+	terrain.attach(relay_block);
+
+	change_relay = true;
 }
 
-function detecte_collision(object1, object2) {
 
-	// console.log(object2);
+/**
+ * @description Detecte la collision entre deux objets
+ * @param {THREE.Mesh} object1
+ * @param {THREE.Mesh} object2
+ * @returns 
+ */
+function detecte_collision(object1, object2) {
 	let box1 = new THREE.Box3().setFromObject(object1);
 	let box2 = new THREE.Box3().setFromObject(object2);
 	return box1.intersectsBox(box2);
 }
+
+
 
 function update_relay() {
 
@@ -515,9 +527,20 @@ function update_relay() {
 			document.getElementById("spinDiv").style.display = "flex";
 			change_relay = false;
 		}
+		else {
+			if (getTime() % 8 == 0 && getTime() != 0) {
+				isStarted = false;
+				currentSpeed = 0;
+				stopped = true;
+				document.getElementById("looseGame").style.display = "flex";
+				document.getElementById("download-banner").style.display = "flex";
+				document.getElementById('run-button').style.display = "none";
+			}
+		}
 	}
 	else {
-		add_relay();
+		if (getTime() % 5 == 0 && getTime() != 0 && !stopped)
+			add_relay();
 	}
 }
 
@@ -574,10 +597,16 @@ function spinSlot() {
 	document.getElementById("spinDiv").style.display = "none";
 }
 
+function getTime() {
+	let second = Math.floor((Date.now() - timer) / 1000);
+	return second;
+}
+
 function startGame() {
 	if (isStarted == false) {
 		document.getElementById('download-banner').style.display = "none";
 		isStarted = true;
+		timer = Date.now();
 	}
 	if (backgroundAudio.isPlaying == false) {
 		backgroundAudio.play();
