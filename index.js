@@ -307,7 +307,8 @@ function init() {
 		imgBtn.src = "public/assets/img/RUN_off.png";
 	});
 	btn.addEventListener("click", function (e) {
-		startGame()
+		startGame();
+		document.getElementById('clickRun').style.display = "flex";
 		nbClick++;
 		if (currentSpeed <= maxSpeed) {
 			if (stopped) {
@@ -343,6 +344,9 @@ function init() {
 		document.getElementById("winDiv").style.display = "none";
 		document.getElementById("spinDiv").style.display = "none";
 		reactivateButton();
+		setTimeout(() => {
+			document.getElementById('clickRun').style.display = "none";
+		}, 200);
 	});
 
 	setTimeout(function decrement() {
