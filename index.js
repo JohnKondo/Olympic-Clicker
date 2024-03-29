@@ -29,7 +29,8 @@ let nbClick = 0;
 let nbCollision = 0;
 let bronzePiece = 0;
 let silverPiece = 0;
-let goldPiece = 0;
+let bronzeValue;
+let silverValue;
 
 const pathTexture = "public/assets/textures";
 const pathProps = "public/assets/props";
@@ -146,7 +147,7 @@ function init() {
 		object.scale.set(0.15, 0.15, 0.15);
 		object.rotation.x = Math.PI / 4;
 		object.rotation.y = Math.PI / 2;
-		object.position.set(-118, 100, 300);
+		object.position.set(-118, 125, 300);
 
 		bronzeMedals = object;
 
@@ -181,7 +182,7 @@ function init() {
 		object.scale.set(0.15, 0.15, 0.15);
 		object.rotation.x = Math.PI / 4;
 		object.rotation.y = Math.PI / 2;
-		object.position.set(-125, 50, 300);
+		object.position.set(-125, 75, 300);
 
 		silverMedals = object;
 
@@ -216,7 +217,7 @@ function init() {
 		object.scale.set(0.15, 0.15, 0.15);
 		object.rotation.x = Math.PI / 4;
 		object.rotation.y = Math.PI / 2;
-		object.position.set(-132, -5, 300);
+		object.position.set(-132, 20, 300);
 
 		goldMedals = object;
 
@@ -280,8 +281,8 @@ function init() {
 	controls.update();
 
 	window.addEventListener('resize', onWindowResize);
-
-	//const btn = document.createElement('button');
+	bronzeValue = document.getElementById("bronzeValue");
+	silverValue = document.getElementById("silverValue");
 	const btn = document.createElement('a');
 	const imgBtn = document.createElement('img');
 	imgBtn.src = "public/assets/img/RUN_off.png";
@@ -312,11 +313,13 @@ function init() {
 				stopped = false;
 			}
 			currentSpeed = currentSpeed - 0.0008 * speedMultiplicator;
-			speedMultiplicator != 1 ? bronzePiece += 1 : bronzePiece += 2;
+			speedMultiplicator != 1 ? bronzePiece += 2 : bronzePiece += 1;
 			if (bronzePiece >= 30) {
 				silverPiece++;
+				silverValue.textContent = silverPiece.toString();
 				bronzePiece -= 30;
 			}
+			bronzeValue.textContent = bronzePiece.toString();
 
 		}
 		if (Math.floor(action.timeScale) < maxTimescale)
