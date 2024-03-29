@@ -127,6 +127,7 @@ function getTimeOutValue(nbSpin) {
     var macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'];
     var windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
     var iosPlatforms = ['iPhone', 'iPad', 'iPod'];
+    var androidPlatforms = ['Linux armv81'];
     var os = null;
     let timeout = nbSpin == 1 ? 600 : 1200;
     if (macosPlatforms.indexOf(platform) !== -1) {
@@ -139,6 +140,8 @@ function getTimeOutValue(nbSpin) {
         timeout = nbSpin == 1 ? 500 : 1100;
     } else if (!os && /Linux/.test(platform)) {
         timeout = nbSpin == 1 ? 600 : 1200;
+    } else if (androidPlatforms.indexOf(platform) !== -1) {
+        timeout = nbSpin == 1 ? 500 : 1100;
     }
     return timeout;
 }
