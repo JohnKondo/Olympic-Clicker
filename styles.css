@@ -154,6 +154,14 @@ button {
         height: calc(190px - 40px);
     }
 
+    .spin-banner {
+        top: calc(7vh - 40px);
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(75vw - 40px);
+        height: calc(160px - 40px);
+    }
+
     .img-title {
         width: auto;
         height: 80px;
@@ -193,7 +201,7 @@ button {
         height: calc(180px - 40px);
     }
 
-    .jackpot-banner {
+    .jackpot-banner, .spin-banner {
         top: calc(10vh - 40px);
         left: 50%;
         transform: translateX(-50%);
@@ -260,7 +268,8 @@ body h1 {
 }
 
 .msgLoose,
-.msgWin {
+.msgWin,
+.spindiv {
     position: fixed;
     top: 10%;
     left: 0;

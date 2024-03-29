@@ -1,3 +1,5 @@
+import { spinSlot } from './index.js';
+
 const spinBtn = document.querySelector('.spin-btn'),
     stopBtn = document.querySelector('.stop-btn'),
     spin1 = document.querySelector('.spinner-1'),
@@ -32,6 +34,7 @@ const spinners = [{
 
 const spin = () => {
     if (canSpin) {
+        spinSlot();
         nbSpin++;
         for (let i = 0; i < spinners.length; i++) {
             spinWheel(spinners[i])

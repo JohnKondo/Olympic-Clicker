@@ -334,6 +334,7 @@ function init() {
 		document.getElementById("slotContainer").style.display = "none";
 		document.getElementById("looseDiv").style.display = "none";
 		document.getElementById("winDiv").style.display = "none";
+		document.getElementById("spinDiv").style.display = "none";
 		reactivateButton();
 	});
 
@@ -505,6 +506,7 @@ function update_relay() {
 			terrain.remove(relay_block);
 			document.getElementById('run-button').style.display = "none";
 			document.getElementById("slotContainer").style.display = "block";
+			document.getElementById("spinDiv").style.display = "flex";
 			change_relay = false;
 		}
 	}
@@ -560,6 +562,12 @@ function animate() {
 	renderer.render(scene, camera);
 }
 
+function spinSlot() {
+	silverPiece--;
+	silverValue.textContent = silverPiece.toString();
+	document.getElementById("spinDiv").style.display = "none";
+}
+
 function startGame() {
 	if (isStarted == false) {
 		document.getElementById('download-banner').style.display = "none";
@@ -569,3 +577,5 @@ function startGame() {
 		backgroundAudio.play();
 	}
 }
+
+export { spinSlot };
