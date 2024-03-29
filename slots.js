@@ -1,4 +1,4 @@
-import { spinSlot } from './index.js';
+import { spinSlot, endGame } from './index.js';
 
 const spinBtn = document.querySelector('.spin-btn'),
     stopBtn = document.querySelector('.stop-btn'),
@@ -46,7 +46,7 @@ const spin = () => {
         }
         setTimeout(function () {
             stopBtn.click();
-        }, nbSpin == 1 ? 600 : 1200);
+        }, getTimeOutValue(nbSpin));
     }
     canSpin = false
 }
@@ -108,7 +108,10 @@ const checkSymbols = (delay) => {
             jackpot = true;
             document.getElementById("looseDiv").style.display = "flex";
         }
-        document.getElementById('run-button').style.display = "flex";
+        if (nbSpin != 2)
+            document.getElementById('run-button').style.display = "flex";
+        else
+            endGame();
 
     }, 125 + delay * 2)
 }
@@ -120,6 +123,30 @@ const reactivateButton = () => {
     canSpin = true
     btnPushed(spinBtn, false)
     btnPushed(stopBtn, false)
+}
+
+function getTimeOutValue(nbSpin) {
+    var platform = window.navigator.platform;
+    var macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'];
+    var windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+    var iosPlatforms = ['iPhone', 'iPad', 'iPod'];
+    var androidPlatforms = ['Linux armv81'];
+    var os = null;
+    let timeout = nbSpin == 1 ? 600 : 1200;
+    if (macosPlatforms.indexOf(platform) !== -1) {
+        timeout = nbSpin == 1 ? 600 : 1200;
+    } else if (iosPlatforms.indexOf(platform) !== -1) {
+        timeout = nbSpin == 1 ? 600 : 1200;
+    } else if (windowsPlatforms.indexOf(platform) !== -1) {
+        timeout = nbSpin == 1 ? 500 : 1100;
+    } else if (androidPlatforms.indexOf(platform) !== -1) {
+        timeout = nbSpin == 1 ? 500 : 1100;
+    } else if (/Android/.test(platform)) {
+        timeout = nbSpin == 1 ? 500 : 1100;
+    } else if (!os && /Linux/.test(platform)) {
+        timeout = nbSpin == 1 ? 600 : 1200;
+    }
+    return timeout;
 }
 
 spinBtn.addEventListener('click', spin)

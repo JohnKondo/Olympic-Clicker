@@ -15,6 +15,7 @@ let currentSpeed = -0.001;
 let speedMultiplicator = 1;
 const maxSpeed = 0.1;
 const maxTimescale = 2.00;
+let loose = false;
 
 const audioListener = new THREE.AudioListener();
 const backgroundAudio = new THREE.Audio(audioListener);
@@ -321,12 +322,10 @@ function init() {
 				silverValue.textContent = silverPiece.toString();
 				bronzePiece -= 30;
 			}
-			if (bronzePiece > 9) {
+			if (bronzePiece > 9)
 				document.getElementsByClassName("bronzemedals")[0].style.setProperty("right", "calc(5vw - 15px)");
-			}
-			else {
+			else
 				document.getElementsByClassName("bronzemedals")[0].style.setProperty("right", "calc(8vw - 15px)");
-			}
 			bronzeValue.textContent = bronzePiece.toString();
 
 		}
@@ -595,6 +594,11 @@ function update_relay() {
 			document.getElementById('run-button').style.display = "none";
 			document.getElementById("slotContainer").style.display = "block";
 			document.getElementById("spinDiv").style.display = "flex";
+			if (silverPiece == 0) {
+				loose = true;
+				endGame();
+				return;
+			}
 			change_relay = false;
 		}
 		else {
@@ -616,6 +620,8 @@ function update_relay() {
 
 
 function animate() {
+	if (loose)
+		return;
 	backgroundAudio.setPlaybackRate(1 + currentSpeed * -2);
 	requestAnimationFrame(animate);
 	let clouds1 = scene.getObjectByName("cloud1");
@@ -682,4 +688,22 @@ function startGame() {
 	}
 }
 
-export { spinSlot };
+function endGame() {
+	document.getElementById('run-button').style.display = "none";
+	if (loose == true) {
+		setTimeout( () => {
+			document.getElementById("endText").textContent = "YOU LOOSE";
+			document.getElementById("slotContainer").style.display = "none";
+			document.getElementById("end_screen").style.display = "flex";
+			document.getElementById("end-download-banner").style.display = "flex";
+		}, 1100);
+	} else {
+		setTimeout( () => {
+			document.getElementById("slotContainer").style.display = "none";
+			document.getElementById("end_screen").style.display = "flex";
+			document.getElementById("end-download-banner").style.display = "flex";
+		}, 1100);
+	}
+}
+
+export { spinSlot, endGame };
