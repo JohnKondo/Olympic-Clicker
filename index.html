@@ -38,11 +38,11 @@
 			<img class="img-title" src="public/title.png" alt="Olympic Clicker">
 		</div>
 	</div>
-	<div id="end_screen" class="end_screen" style="display: none;align-items: center; flex-direction: column;">
-		<div class="popup title-banner">
-			<strong id="endText" style="color: #FFF082;">PLAY NOW</strong>
-		</div>
-	</div>
+	<a id="end_screen" style="display: none;align-items: center; flex-direction: column; background-color: rgba(0, 0, 0, 0.5); position: fixed;
+    width: 100%; height: 100%; z-index: 1000; padding-top: 15vh;" href="https://github.com/JohnKondo/Olympic-Clicker" target="_blank">
+		<dotlottie-player src="public/img/playbtn.json" background="transparent" speed="1" class="playMagnifiqueLottie"
+			style="width: 500px; height: auto;" loop autoplay></dotlottie-player>
+	</a>
 	<div class="end-download-banner" id="end-download-banner" style="display:none">
 		<span>Download now !</span>
 		<a href="https://www.youtube.com/watch?v=Zc3jwjMoP78" target="_blank">
@@ -51,7 +51,7 @@
 		</a>
 	</div>
 	<div class="clickRun" id="clickRun" style="display:none">
-		<img src="public/img/add-1.png"/>
+		<img src="public/img/add-1.png" />
 	</div>
 	<div class="download-banner" id="download-banner">
 		<span>Download now and get 10 golden medals! 🏅</span>
@@ -82,7 +82,7 @@
 		</div>
 	</div>
 	<div id="bronzeMedals" class="bronzemedals" style="display: block;">
-		<strong id="bronzeValue" style="color: black;">0</strong> 
+		<strong id="bronzeValue" style="color: black;">0</strong>
 		<!-- <strong id="bronzeValue" style="color: #955F09;">0</strong>  -->
 	</div>
 	<div id="silverMedals" class="silvermedals" style="display: block;">
@@ -143,40 +143,34 @@
 					<div class="spinner-container">
 						<div class="spinner spinner-1">
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
 									alt="auto clicker bonus" /></div>
 							<div class="symbol" data-value="3"><img class="imgSlot" src="public/img/speed_transfert.png"
 									alt="speed transfert bonus" /></div>
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/jackpot.png"
 									alt="auto clicker bonus" /></div>
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
 									alt="auto clicker bonus" /></div>
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
 									alt="auto clicker bonus" /></div>
 							<div class="symbol" data-value="3"><img class="imgSlot" src="public/img/speed_transfert.png"
 									alt="speed transfert bonus" /></div>
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="4">
-								<img class="imgSlot" src="public/img/jackpot.png"
-									alt="jackpot bonus" />
+								<img class="imgSlot" src="public/img/jackpot.png" alt="jackpot bonus" />
 							</div>
 						</div>
 						<div class="overlay"></div>
@@ -184,40 +178,34 @@
 					<div class="spinner-container">
 						<div class="spinner spinner-2">
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
 									alt="auto clicker bonus" /></div>
 							<div class="symbol" data-value="3"><img class="imgSlot" src="public/img/speed_transfert.png"
 									alt="speed transfert bonus" /></div>
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/jackpot.png"
 									alt="auto clicker bonus" /></div>
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
 									alt="auto clicker bonus" /></div>
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
 									alt="auto clicker bonus" /></div>
 							<div class="symbol" data-value="3"><img class="imgSlot" src="public/img/speed_transfert.png"
 									alt="speed transfert bonus" /></div>
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="4">
-								<img class="imgSlot" src="public/img/jackpot.png"
-									alt="jackpot bonus" />
+								<img class="imgSlot" src="public/img/jackpot.png" alt="jackpot bonus" />
 							</div>
 						</div>
 						<div class="overlay"></div>
@@ -225,38 +213,32 @@
 					<div class="spinner-container">
 						<div class="spinner spinner-3" data-id="3">
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
 									alt="auto clicker bonus" /></div>
 							<div class="symbol" data-value="3"><img class="imgSlot" src="public/img/speed_transfert.png"
 									alt="speed transfert bonus" /></div>
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="4">
-								<img class="imgSlot" src="public/img/jackpot.png"
-									alt="jackpot bonus" />
+								<img class="imgSlot" src="public/img/jackpot.png" alt="jackpot bonus" />
 							</div>
 							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/clicker.png"
 									alt="auto clicker bonus" /></div>
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/jackpot.png"
 									alt="auto clicker bonus" /></div>
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="2"><img class="imgSlot" src="public/img/jackpot.png"
 									alt="auto clicker bonus" /></div>
 							<div class="symbol" data-value="1">
-								<img class="imgSlot" src="public/img/x2.png"
-									alt="speed x2 bonus" />
+								<img class="imgSlot" src="public/img/x2.png" alt="speed x2 bonus" />
 							</div>
 							<div class="symbol" data-value="3"><img class="imgSlot" src="public/img/speed_transfert.png"
 									alt="speed transfert bonus" /></div>
@@ -286,7 +268,7 @@
 	</div>
 	<script type="module" src="./index.js"></script>
 	<script type="module" src="./slots.js"></script>
-    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+	<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 </body>
 
 </html>
