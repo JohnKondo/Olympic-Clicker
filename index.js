@@ -19,8 +19,10 @@ let loose = false;
 
 const audioListener = new THREE.AudioListener();
 const backgroundAudio = new THREE.Audio(audioListener);
+const slotAudio = new THREE.Audio(audioListener);
 const clickAudioLoader = new THREE.AudioLoader();
 const backgroundAudioLoader = new THREE.AudioLoader();
+const slotAudioLoader = new THREE.AudioLoader();
 
 let action;
 let change_relay = false;
@@ -676,6 +678,12 @@ function spinSlot() {
 	silverPiece--;
 	silverValue.textContent = silverPiece.toString();
 	document.getElementById("spinDiv").style.display = "none";
+	slotAudioLoader.load('public/assets/sounds/Jackpot.mp3', function (buffer) {
+		slotAudio.setBuffer(buffer);
+		slotAudio.setVolume(0.6);
+		slotAudio.setPlaybackRate(1);
+		slotAudio.play();
+	});
 }
 
 function getTime() {
