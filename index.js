@@ -146,7 +146,7 @@ function init() {
 		object.scale.set(0.15, 0.15, 0.15);
 		object.rotation.x = Math.PI / 4;
 		object.rotation.y = Math.PI / 2;
-		object.position.set(-100, 100, 300);
+		object.position.set(-118, 100, 300);
 
 		bronzeMedals = object;
 
@@ -181,7 +181,7 @@ function init() {
 		object.scale.set(0.15, 0.15, 0.15);
 		object.rotation.x = Math.PI / 4;
 		object.rotation.y = Math.PI / 2;
-		object.position.set(-105, 50, 300);
+		object.position.set(-125, 50, 300);
 
 		silverMedals = object;
 
@@ -216,7 +216,7 @@ function init() {
 		object.scale.set(0.15, 0.15, 0.15);
 		object.rotation.x = Math.PI / 4;
 		object.rotation.y = Math.PI / 2;
-		object.position.set(-109, 0, 300);
+		object.position.set(-132, -5, 300);
 
 		goldMedals = object;
 
