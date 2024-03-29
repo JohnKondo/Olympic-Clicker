@@ -281,25 +281,26 @@ body h1 {
 }
 
 .bronzemedals, .silvermedals, .goldmedals {
-    right: 12%;
     transform: translateX(-50%);
-    height: calc(110px - 40px);
+    height: calc(70px - 40px);
     position: fixed;
-    display: inline-block;
     text-align: center;
     font-size: 20px;
 }
 
 .bronzemedals {
-    top: calc(7vh - 15px);
+    top: calc(6vh - 15px);
+    right: calc(8vw - 15px);
 }
 
 .silvermedals {
     top: calc(14vh - 15px);
+    right: calc(8vw - 17px);
 }
 
 .goldmedals {
     top: calc(21vh - 15px);
+    right: calc(8vw - 17px);
 }
 
 .start_screen {

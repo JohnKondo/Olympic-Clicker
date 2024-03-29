@@ -319,6 +319,12 @@ function init() {
 				silverValue.textContent = silverPiece.toString();
 				bronzePiece -= 30;
 			}
+			if (bronzePiece > 9) {
+				document.getElementsByClassName("bronzemedals")[0].style.setProperty("right", "calc(5vw - 15px)");
+			}
+			else {
+				document.getElementsByClassName("bronzemedals")[0].style.setProperty("right", "calc(8vw - 15px)");
+			}
 			bronzeValue.textContent = bronzePiece.toString();
 
 		}
