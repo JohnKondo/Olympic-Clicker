@@ -1,4 +1,4 @@
-import { spinSlot } from './index.js';
+import { spinSlot, endGame } from './index.js';
 
 const spinBtn = document.querySelector('.spin-btn'),
     stopBtn = document.querySelector('.stop-btn'),
@@ -108,7 +108,10 @@ const checkSymbols = (delay) => {
             jackpot = true;
             document.getElementById("looseDiv").style.display = "flex";
         }
-        document.getElementById('run-button').style.display = "flex";
+        if (nbSpin != 2)
+            document.getElementById('run-button').style.display = "flex";
+        else
+            endGame();
 
     }, 125 + delay * 2)
 }
