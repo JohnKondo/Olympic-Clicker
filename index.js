@@ -278,7 +278,7 @@ function init() {
 
 	const controls = new OrbitControls(camera, renderer.domElement);
 	controls.target.set(0, 100, 0);
-	controls.enabled = false;
+	// controls.enabled = false;
 	controls.update();
 
 	window.addEventListener('resize', onWindowResize);
@@ -446,7 +446,7 @@ function generate_clouds(id, x, y = 150, z = 300) {
  */
 function add_relay() {
 
-	relay_block = new THREE.Mesh(new THREE.BoxGeometry(300, 200, 10), new THREE.MeshBasicMaterial({ color: '#FC2C00', transparent: true, opacity: 0.5 }));
+	relay_block = new THREE.Mesh(new THREE.BoxGeometry(50, 50, 10), new THREE.MeshBasicMaterial({ color: "#ff0000", transparent: true, opacity: 0 }));
 
 	// const textureLoader = new THREE.TextureLoader();
 
@@ -487,9 +487,78 @@ function add_relay() {
 	relay_block.position.set(0, -200, 500);
 	relay_block.rotation.x = Math.PI / 3;
 	scene.add(relay_block);
+	
+	let flammes = create_flammes();
+	scene.add(flammes);
+
 	terrain.attach(relay_block);
+	terrain.attach(flammes);
 
 	change_relay = true;
+}
+
+
+
+function create_flammes() {
+	const flammes = new THREE.Group();
+	const textureLoader = new THREE.TextureLoader();
+
+	const base_color = textureLoader.load(`${pathTexture}/flamme/flamme_DefaultMaterial_BaseColor.png`);
+	const metal = textureLoader.load(`${pathTexture}/flamme/flamme_DefaultMaterial_Metallic.png`);
+	const roughness = textureLoader.load(`${pathTexture}/flamme/flamme_DefaultMaterial_Roughness.png`);
+
+
+	flammes.name = "flammes";
+
+	const texture = new THREE.MeshStandardMaterial({
+		map: base_color,
+		metalnessMap: metal,
+		roughnessMap: roughness,
+		roughness: 1,
+		metalness: 0.5
+	});
+
+	let x = 100;
+	let y = -250;
+	let z = 428;
+	let rotationX = Math.PI / 3;
+	let rotationZ = Math.PI / 17;
+
+	new FBXLoader().load(`${pathProps}/flamme.fbx`, function (object) {
+		object.scale.set(0.2, 0.2, 0.2);
+		object.position.set(x, y, z);
+		//object.rotation.y = rotationY;
+		object.rotation.x = rotationX;
+		object.rotation.z = -rotationZ;
+		object.traverse(function (child) {
+			if (child.isMesh) {
+				child.material = texture;
+				child.castShadow = true;
+				child.receiveShadow = true;
+			}
+		});
+
+		flammes.add(object);
+	});
+
+	new FBXLoader().load(`${pathProps}/flamme.fbx`, function (object) {
+		object.scale.set(0.2, 0.2, 0.2);
+		object.position.set(-x, y, z);
+		object.rotation.x = rotationX;
+		object.rotation.z = rotationZ;
+
+		object.traverse(function (child) {
+			if (child.isMesh) {
+				child.material = texture;
+				child.castShadow = true;
+				child.receiveShadow = true;
+			}
+		});
+
+		flammes.add(object);
+	});
+
+	return flammes;
 }
 
 
@@ -522,6 +591,7 @@ function update_relay() {
 			stopped = true;
 			currentSpeed = 0;
 			terrain.remove(relay_block);
+			terrain.remove(scene.getObjectByName("flammes"));
 			document.getElementById('run-button').style.display = "none";
 			document.getElementById("slotContainer").style.display = "block";
 			document.getElementById("spinDiv").style.display = "flex";
@@ -561,8 +631,7 @@ function animate() {
 			}
 			else
 				mixer.update(0);
-			// sphereGeometry.rotateX(currentSpeed);
-
+			
 			if (terrain)
 				terrain.rotation.z += currentSpeed * speedMultiplicator;
 			if (stopped == false) {
