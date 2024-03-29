@@ -46,7 +46,7 @@ const spin = () => {
         }
         setTimeout(function () {
             stopBtn.click();
-        }, nbSpin == 1 ? 600 : 1200);
+        }, getTimeOutValue(nbSpin));
     }
     canSpin = false
 }
@@ -120,6 +120,25 @@ const reactivateButton = () => {
     canSpin = true
     btnPushed(spinBtn, false)
     btnPushed(stopBtn, false)
+}
+
+function getTimeOutValue(nbSpin) {
+    var platform = window.navigator.platform;
+    var macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'];
+    var windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+    var iosPlatforms = ['iPhone', 'iPad', 'iPod'];
+    let timeout = nbSpin == 1 ? 600 : 1200;
+    if (macosPlatforms.indexOf(platform) !== -1) {
+        timeout = nbSpin == 1 ? 600 : 1200;
+    } else if (iosPlatforms.indexOf(platform) !== -1) {
+        timeout = nbSpin == 1 ? 600 : 1200;
+    } else if (windowsPlatforms.indexOf(platform) !== -1) {
+        timeout = nbSpin == 1 ? 500 : 1100;
+    } else if (/Android/.test(platform)) {
+        timeout = nbSpin == 1 ? 500 : 1100;
+    } else if (!os && /Linux/.test(platform)) {
+        timeout = nbSpin == 1 ? 600 : 1200;
+    }
 }
 
 spinBtn.addEventListener('click', spin)
