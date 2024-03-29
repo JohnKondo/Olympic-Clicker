@@ -92,6 +92,14 @@
 	letter-spacing: calc(1.5 * var(--length));
 	border-radius: inherit;
 	background: #222;
+	user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    touch-action: manipulation;
 }
 
 .slot-machine-top .jackpot {

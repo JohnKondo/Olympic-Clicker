@@ -201,7 +201,8 @@ button {
         height: calc(180px - 40px);
     }
 
-    .jackpot-banner, .spin-banner {
+    .jackpot-banner,
+    .spin-banner {
         top: calc(10vh - 40px);
         left: 50%;
         transform: translateX(-50%);
@@ -280,7 +281,9 @@ body h1 {
     font-size: 35px;
 }
 
-.bronzemedals, .silvermedals, .goldmedals {
+.bronzemedals,
+.silvermedals,
+.goldmedals {
     transform: translateX(-50%);
     height: calc(70px - 40px);
     position: fixed;
@@ -320,3 +323,48 @@ body h1 {
     }
 
 }
+
+span {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    touch-action: manipulation;
+}
+
+img {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    touch-action: manipulation;
+}
+
+a {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    touch-action: manipulation;
+}
+
+strong {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    touch-action: manipulation;
+}
+
