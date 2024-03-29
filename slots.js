@@ -46,7 +46,7 @@ const spin = () => {
         }
         setTimeout(function () {
             stopBtn.click();
-        }, nbSpin == 1 ? 500 : 1100);
+        }, nbSpin == 1 ? 600 : 1200);
     }
     canSpin = false
 }
