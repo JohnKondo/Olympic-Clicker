@@ -16,6 +16,8 @@ let speedMultiplicator = 1;
 const maxSpeed = 0.1;
 const maxTimescale = 2.00;
 let loose = false;
+let clickRunDom = document.getElementById('clickRun');
+let slotContainerDom = document.getElementById("slotContainer");
 
 const audioListener = new THREE.AudioListener();
 const backgroundAudio = new THREE.Audio(audioListener);
@@ -310,8 +312,8 @@ function init() {
 	});
 	btn.addEventListener("click", function (e) {
 		startGame();
-		document.getElementById('clickRun').style.display = "flex";
-		document.getElementById("clickRun").classList.remove("hidden");
+		clickRunDom.style.display = "flex";
+		clickRunDom.classList.remove("hidden");
 		nbClick++;
 		if (currentSpeed <= maxSpeed) {
 			if (stopped) {
@@ -342,14 +344,13 @@ function init() {
 			sound.setLoop(false);
 			sound.play();
 		});
-		document.getElementById("slotContainer").style.display = "none";
+		slotContainerDom.style.display = "none";
 		document.getElementById("looseDiv").style.display = "none";
 		document.getElementById("winDiv").style.display = "none";
 		document.getElementById("spinDiv").style.display = "none";
 		reactivateButton();
 		setTimeout(() => {
-			document.getElementById("clickRun").classList.add("hidden");
-			// document.getElementById('clickRun').style.display = "none";
+			clickRunDom.classList.add("hidden");
 		}, 60);
 	});
 
@@ -600,7 +601,7 @@ function update_relay() {
 			terrain.remove(relay_block);
 			terrain.remove(scene.getObjectByName("flammes"));
 			document.getElementById('run-button').style.display = "none";
-			document.getElementById("slotContainer").style.display = "block";
+			slotContainerDom.style.display = "block";
 			document.getElementById("spinDiv").style.display = "flex";
 			if (silverPiece == 0) {
 				loose = true;
@@ -706,14 +707,14 @@ function endGame() {
 	document.getElementById('run-button').style.display = "none";
 	if (loose == true) {
 		setTimeout( () => {
-			document.getElementById("endText").textContent = "YOU LOOSE";
-			document.getElementById("slotContainer").style.display = "none";
+			// document.getElementById("endText").textContent = "YOU LOOSE";
+			slotContainerDom.style.display = "none";
 			document.getElementById("end_screen").style.display = "flex";
 			document.getElementById("end-download-banner").style.display = "flex";
 		}, 1100);
 	} else {
 		setTimeout( () => {
-			document.getElementById("slotContainer").style.display = "none";
+			slotContainerDom.style.display = "none";
 			document.getElementById("end_screen").style.display = "flex";
 			document.getElementById("end-download-banner").style.display = "flex";
 		}, 1100);
