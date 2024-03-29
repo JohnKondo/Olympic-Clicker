@@ -309,6 +309,7 @@ function init() {
 	btn.addEventListener("click", function (e) {
 		startGame();
 		document.getElementById('clickRun').style.display = "flex";
+		document.getElementById("clickRun").classList.remove("hidden");
 		nbClick++;
 		if (currentSpeed <= maxSpeed) {
 			if (stopped) {
@@ -345,8 +346,9 @@ function init() {
 		document.getElementById("spinDiv").style.display = "none";
 		reactivateButton();
 		setTimeout(() => {
-			document.getElementById('clickRun').style.display = "none";
-		}, 200);
+			document.getElementById("clickRun").classList.add("hidden");
+			// document.getElementById('clickRun').style.display = "none";
+		}, 60);
 	});
 
 	setTimeout(function decrement() {
