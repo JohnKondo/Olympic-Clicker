@@ -15,8 +15,12 @@ let currentSpeed = -0.001;
 let speedMultiplicator = 1;
 const maxSpeed = 0.1;
 const maxTimescale = 2.00;
+
 const audioListener = new THREE.AudioListener();
 const backgroundAudio = new THREE.Audio(audioListener);
+const clickAudioLoader = new THREE.AudioLoader();
+const backgroundAudioLoader = new THREE.AudioLoader();
+
 let action;
 let change_relay = false;
 let clickAnimationInProgress = false;
@@ -26,7 +30,6 @@ let nbCollision = 0;
 let bronzePiece = 0;
 let silverPiece = 0;
 let goldPiece = 0;
-let timer = 0;
 
 const pathTexture = "public/assets/textures";
 const pathProps = "public/assets/props";
@@ -75,8 +78,7 @@ function init() {
 	// Audio
 	camera.add(audioListener);
 	const sound = new THREE.Audio(audioListener);
-	const clickAudioLoader = new THREE.AudioLoader();
-	const backgroundAudioLoader = new THREE.AudioLoader();
+
 	backgroundAudioLoader.load('public/assets/sounds/background-music.mp3', function (buffer) {
 		backgroundAudio.setBuffer(buffer);
 		backgroundAudio.setLoop(true);
@@ -291,11 +293,10 @@ function init() {
 		if (currentSpeed <= maxSpeed) {
 			if (stopped) {
 				currentSpeed = -0.001;
-				timer = Date.now();
 				stopped = false;
 			}
 			currentSpeed = currentSpeed - 0.0008 * speedMultiplicator;
-			speedMultiplicator !=1 ? bronzePiece += 1 : bronzePiece += 2;
+			speedMultiplicator != 1 ? bronzePiece += 1 : bronzePiece += 2;
 			if (bronzePiece >= 30) {
 				silverPiece++;
 				bronzePiece -= 30;
@@ -412,51 +413,52 @@ function generate_clouds(index, x, y = 150, z = 300) {
  * @description A partir de la position actuelle + 4, on ajoute un relay qui va stopper le personnage
  */
 function add_relay() {
+	if (dist > 5 && (dist.toFixed(1) % 5 <= 0.1)) {
+		relay_block = new THREE.Mesh(new THREE.BoxGeometry(300, 200, 10), new THREE.MeshBasicMaterial({ color: '#FC2C00', transparent: true, opacity: 0.5 }));
 
-	relay_block = new THREE.Mesh(new THREE.BoxGeometry(300, 200, 10), new THREE.MeshBasicMaterial({ color: '#FC2C00' , transparent: true , opacity: 0.5 }));
+		// const textureLoader = new THREE.TextureLoader();
 
-	// const textureLoader = new THREE.TextureLoader();
+		// const base_color4 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_4.png`, updateFileToLoad); // Number 1175
+		// // const height = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Height.png`);
+		// const normal = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Normal.png`, updateFileToLoad);
+		// const roughness = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Roughness.png`, updateFileToLoad);
 
-	// const base_color4 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_4.png`, updateFileToLoad); // Number 1175
-	// // const height = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Height.png`);
-	// const normal = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Normal.png`, updateFileToLoad);
-	// const roughness = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Roughness.png`, updateFileToLoad);
+		// const texturePerso = new THREE.MeshStandardMaterial({
+		// 	map: base_color4,
+		// 	normalMap: normal,
+		// 	roughnessMap: roughness,
+		// });
 
-	// const texturePerso = new THREE.MeshStandardMaterial({
-	// 	map: base_color4,
-	// 	normalMap: normal,
-	// 	roughnessMap: roughness,
-	// });
+		// new FBXLoader().load(`${pathProps}/Standing.fbx`, function (object) {
+		// 	object.scale.set(0.1, 0.1, 0.1);
+		// 	object.position.set(0, -400, 500);
+		// 	object.rotation.x = Math.PI / 3;
+		// 	object.name = "relay";
 
-	// new FBXLoader().load(`${pathProps}/Standing.fbx`, function (object) {
-	// 	object.scale.set(0.1, 0.1, 0.1);
-	// 	object.position.set(0, -400, 500);
-	// 	object.rotation.x = Math.PI / 3;
-	// 	object.name = "relay";
+		// 	object.traverse(function (child) {
+		// 		if (child.isMesh) {
+		// 			child.material = texturePerso;
+		// 			child.castShadow = true;
+		// 			child.receiveShadow = true;
+		// 		}
+		// 	});
 
-	// 	object.traverse(function (child) {
-	// 		if (child.isMesh) {
-	// 			child.material = texturePerso;
-	// 			child.castShadow = true;
-	// 			child.receiveShadow = true;
-	// 		}
-	// 	});
+		// 	let newmixer = new THREE.AnimationMixer(object);
+		// 	const action = newmixer.clipAction(object.animations[0]);
+		// 	action.play();
+		// 	relay_block = object;
+		// 	scene.add(relay_block);
+		// 	terrain.attach(relay_block);
+		// });
 
-	// 	let newmixer = new THREE.AnimationMixer(object);
-	// 	const action = newmixer.clipAction(object.animations[0]);
-	// 	action.play();
-	// 	relay_block = object;
-	// 	scene.add(relay_block);
-	// 	terrain.attach(relay_block);
-	// });
+		relay_block.name = "relay";
+		relay_block.position.set(0, -200, 500);
+		relay_block.rotation.x = Math.PI / 3;
+		scene.add(relay_block);
+		terrain.attach(relay_block);
 
-	relay_block.name = "relay";
-	relay_block.position.set(0, -200, 500);
-	relay_block.rotation.x = Math.PI / 3;
-	scene.add(relay_block);
-	terrain.attach(relay_block);
-
-	change_relay = true;
+		change_relay = true;
+	}
 }
 
 function detecte_collision(object1, object2) {
@@ -469,39 +471,27 @@ function detecte_collision(object1, object2) {
 
 function update_relay() {
 
-    if (change_relay == true && relay_block) {
-        let check_collision = detecte_collision(scene.getObjectByName("perso"), scene.getObjectByName("relay"));
+	if (change_relay == true && relay_block) {
+		let check_collision = detecte_collision(scene.getObjectByName("perso"), scene.getObjectByName("relay"));
 
-        if(check_collision == true) {
+		if (check_collision == true) {
 			nbCollision++;
 			if (nbCollision == 1)
 				speedMultiplicator = 1.6;
 			else
 				speedMultiplicator = 1;
-            console.log("collision detected");
-            stopped = true;
+			console.log("collision detected");
+			stopped = true;
+			currentSpeed = 0;
+			terrain.remove(relay_block);
+			document.getElementById('run-button').style.display = "none";
+			document.getElementById("slotContainer").style.display = "block";
 			change_relay = false;
-            currentSpeed = 0;
-            terrain.remove(relay_block);
-            document.getElementById('run-button').style.display = "none";
-            document.getElementById("slotContainer").style.display = "block";
-            
-        }
-		else {
-			if(getTime() %8 == 0 && getTime() != 0) {
-				isStarted = false;
-				currentSpeed = 0;
-				stopped = true;
-				document.getElementById("looseGame").style.display = "flex";
-				document.getElementById("download-banner").style.display = "flex";
-				document.getElementById('run-button').style.display = "none";
-			}
 		}
-    }
-    else {
-		if(getTime() %5 == 0 && getTime() != 0 && !stopped)
-			add_relay();
-    }
+	}
+	else {
+		add_relay();
+	}
 }
 
 
@@ -555,11 +545,8 @@ function startGame() {
 	if (isStarted == false) {
 		document.getElementById('download-banner').style.display = "none";
 		isStarted = true;
-		timer = Date.now();
 	}
-}
-
-function getTime() {
-	let second = Math.floor((Date.now() - timer) / 1000);
-	return second;
+	if (backgroundAudio.isPlaying == false) {
+		backgroundAudio.play();
+	}
 }
