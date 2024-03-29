@@ -139,6 +139,7 @@ function getTimeOutValue(nbSpin) {
     } else if (!os && /Linux/.test(platform)) {
         timeout = nbSpin == 1 ? 600 : 1200;
     }
+    return timeout;
 }
 
 spinBtn.addEventListener('click', spin)
