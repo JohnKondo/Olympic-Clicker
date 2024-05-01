@@ -60,6 +60,7 @@ const stop = () => {
 
 const spinWheel = (spinner) => {
     let firstWheel = true
+    document.getElementById("jackpotTutorial").style.display = "none";
 
     const wheelInterval = setInterval(() => {
         let stoDelay;
@@ -102,6 +103,7 @@ const checkSymbols = (delay) => {
             document.querySelector('.machine-title').classList.add('jackpot')
             jackpot = true;
             document.getElementById("winDiv").style.display = "flex";
+            document.getElementById("hideMeAfterFirstClick").style.display = "flex";
         }
         else {
             document.querySelector('.machine-title').classList.add('jackpot')
