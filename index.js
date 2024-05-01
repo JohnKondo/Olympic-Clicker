@@ -243,17 +243,14 @@ function init() {
 
 
 	// model
-	loader.load(`${pathProps}/perso-run.fbx`, function (object) {
-		// const base_color1 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_1.png`); // Number 1169
-		// const base_color2 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_2.png`); // Number 1488
-		// const base_color3 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_3.png`); // Number 1945
-		const base_color4 = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_BaseColor_4.png`, updateFileToLoad); // Number 1175
-		// const height = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Height.png`);
-		const normal = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Normal.png`, updateFileToLoad);
-		const roughness = textureLoader.load(`${pathTexture}/texture_perso/bonhomme_baton_DefaultMaterial_Roughness.png`, updateFileToLoad);
+	loader.load(`${pathProps}/run-with-torch.fbx`, function (object) {
+		const base_color = textureLoader.load(`${pathTexture}/perso_avec_flamme/perso_DefaultMaterial_BaseColor.png`, updateFileToLoad);
+		const normal = textureLoader.load(`${pathTexture}/perso_avec_flamme/perso_DefaultMaterial_Normal.png`, updateFileToLoad);
+		const roughness = textureLoader.load(`${pathTexture}/perso_avec_flamme/perso_DefaultMaterial_Roughness.png`, updateFileToLoad);
+
 
 		const texturePerso = new THREE.MeshStandardMaterial({
-			map: base_color4,
+			map: base_color,
 			normalMap: normal,
 			roughnessMap: roughness,
 			// displacementMap: height,
@@ -283,7 +280,7 @@ function init() {
 
 	const controls = new OrbitControls(camera, renderer.domElement);
 	controls.target.set(0, 100, 0);
-	controls.enabled = false;
+	/* controls.enabled = false; */
 	controls.update();
 
 	window.addEventListener('resize', onWindowResize);
@@ -323,10 +320,10 @@ function init() {
 			}
 			currentSpeed = currentSpeed - 0.0008 * speedMultiplicator;
 			speedMultiplicator != 1 ? bronzePiece += 2 : bronzePiece += 1;
-			if (bronzePiece >= 30) {
+			if (bronzePiece >= 20) {
 				silverPiece++;
 				silverValue.textContent = silverPiece.toString();
-				bronzePiece -= 30;
+				bronzePiece -= 20;
 			}
 			if (bronzePiece > 9)
 				document.getElementsByClassName("bronzemedals")[0].style.setProperty("right", "calc(5vw - 15px)");
@@ -592,7 +589,7 @@ function update_relay() {
 		if (check_collision == true) {
 			nbCollision++;
 			if (nbCollision == 1)
-				speedMultiplicator = 1.6;
+				speedMultiplicator = 1.3;
 			else
 				speedMultiplicator = 1;
 			//console.log("collision detected");
@@ -603,11 +600,11 @@ function update_relay() {
 			document.getElementById('run-button').style.display = "none";
 			slotContainerDom.style.display = "block";
 			document.getElementById("spinDiv").style.display = "flex";
-			if (silverPiece == 0) {
+/* 			if (silverPiece == 0) {
 				loose = true;
 				endGame();
 				return;
-			}
+			} */
 			change_relay = false;
 		}
 		else {
