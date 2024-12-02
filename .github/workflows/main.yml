@@ -7,17 +7,3 @@ jobs:
     steps:
     - name: 🚚 Récupération de la dernière version
       uses: actions/checkout@v4    
-    
-    - name: 📂 Synchronisation des fichiers sur le serveur
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: 167.86.94.65
-        username: alpha_main
-        password: ${{ secrets.ftp_password }}
-        server-dir: /
-    - name: Discord notification
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      uses: Ilshidur/action-discord@master
-      with:
-        args: 'The website is up with the latest commit ! Check it out here : http://epita-alpha.13h37.io/'
